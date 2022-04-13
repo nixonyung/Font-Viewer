@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-export const displayTextSlice = createSlice({
+export const slice = createSlice({
   name: 'displayText',
   initialState: localStorage.getItem('displayText') ?? 'helloworld',
   reducers: {
@@ -12,5 +12,5 @@ export const displayTextSlice = createSlice({
   }
 })
 
-export const { updateDisplayText } = displayTextSlice.actions
-export default displayTextSlice.reducer
+export const { updateDisplayText } = slice.actions
+export default slice.reducer

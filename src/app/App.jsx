@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import DisplayTextInput from "../components/DisplayTextInput";
-import FontCard from "../components/FontCard";
+import FontCards from "../components/FontCards";
 
 function App() {
   const [fonts, setFonts] = useState(null);
@@ -14,12 +14,7 @@ function App() {
   return (
     <div className="w-5/6 max-w-screen-md mx-auto mt-8">
       <DisplayTextInput />
-
-      <div className="flex flex-col gap-4">
-        {fonts?.fonts.map((font) => (
-          <FontCard font={font} key={font.name} />
-        ))}
-      </div>
+      <FontCards fonts={fonts} />
     </div>
   );
 }
