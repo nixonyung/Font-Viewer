@@ -1,4 +1,25 @@
-# Getting Started with Create React App
+# Font Viewer
+
+## Get started
+
+1. Run `yarn dev`
+2. [Website at port 3000](http://localhost:3000)
+3. API at port 9000
+   1. [/api/fonts](http://localhost:9000/api/fonts)
+
+## TODO
+
+- update the list of fonts from Notion
+- adjustable font size / font style
+- update FontDisplay (see Website)
+- add tags for fonts
+
+## Maybe useful
+
+- [tailwindcss grid areas](https://savvywombat.com.au/tailwind-css/grid-areas/)
+- [React content editable](https://www.npmjs.com/package/react-contenteditable)
+
+<!-- # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -67,4 +88,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 ### `yarn build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify) -->
