@@ -11,8 +11,9 @@
 
 - update the list of fonts from Notion
 - adjustable font size / font style
-- update FontDisplay (see Website)
-- add tags for fonts
+- reject invalid new font
+- reject duplicated fontName, tag
+- reject with noti
 
 ## Maybe useful
 

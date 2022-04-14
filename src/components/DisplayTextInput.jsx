@@ -1,8 +1,9 @@
 import { useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateDisplayText } from "../app/displayTextSlice";
 
 export default function DisplayTextInput() {
+  const displayText = useSelector((state) => state.displayText);
   const dispatch = useDispatch();
   const displayTextInputRef = useRef(null);
   return (
@@ -17,6 +18,7 @@ export default function DisplayTextInput() {
 
       <input
         id="displayTextInput"
+        value={displayText}
         onChange={(event) => {
           dispatch(updateDisplayText(event.target.value));
         }}

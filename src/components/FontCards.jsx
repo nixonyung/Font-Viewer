@@ -3,49 +3,47 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
 import GoogleFontLoader from "react-google-font-loader";
 import { useDispatch, useSelector } from "react-redux";
-import { addFont, removeFont } from "../app/fontsSlice";
+import { addFont, addTag, removeFont, removeTag } from "../app/fontsSlice";
 
 export default function FontCards() {
-  const fonts = useSelector((state) => state.fonts);
+  const fontRecords = useSelector((state) => state.fontRecords.records);
 
   return (
     <div className="flex flex-col gap-4">
-      {fonts?.fonts.map((font) => (
-        <FontCard font={font} key={font.name} />
+      {fontRecords.map((fontRecord) => (
+        <FontCard fontRecord={fontRecord} key={fontRecord.fontName} />
       ))}
-      <AddFont />
+
+      <AddFontButton />
     </div>
   );
 }
 
-function FontCard({ font }) {
+function FontCard({ fontRecord }) {
+  const { fontName, tags } = fontRecord;
   const displayText = useSelector((state) => state.displayText);
-  const url = `https://fonts.google.com/?query=${font.name.split(" ").join("+")}`;
+  const url = `https://fonts.google.com/?query=${fontName.split(" ").join("+")}`;
 
   return (
     <div className="p-3 bg-gray-600 rounded-md">
-      <GoogleFontLoader
-        fonts={[
-          {
-            font: font.name,
-            weights: [400],
-          },
-        ]}
-      />
-
       <div className="flex items-center gap-4">
-        <span className="text-base text-gray-700">{font.name}</span>
-        {font.tags.map((tag) => (
-          <Tag tagName={tag} key={tag} />
+        <span className="text-base text-gray-700">{fontName}</span>
+
+        {tags.map((tag) => (
+          <Tag {...{ fontName, tag }} key={fontName + "_" + tag} />
         ))}
-        <AddTag></AddTag>
+
+        <AddTagButton fontName={fontName}></AddTagButton>
         <span className="flex-grow"></span>
-        <RemoveCard fontName={font.name} />
+
+        <RemoveCard fontName={fontName} />
       </div>
       <div className="flex items-end gap-6 mt-3">
-        <p style={{ fontFamily: font.name }} className="w-full text-2xl">
+        <GoogleFontLoader fonts={[{ font: fontRecord.fontName, weights: [400] }]} />
+        <p style={{ fontFamily: fontName }} className="w-full text-2xl">
           {displayText}
         </p>
+
         <GoButton url={url}></GoButton>
       </div>
     </div>
@@ -67,15 +65,27 @@ function RemoveCard({ fontName }) {
   );
 }
 
-function Tag({ tagName }) {
+function Tag({ fontName, tag }) {
+  const [isShowingRemove, setIsShowingRemove] = useState(false);
+  const width = tag.length + 3 + "ch";
+  const dispatch = useDispatch();
+
   return (
-    <span className="px-2 py-1 text-xs border-2 border-gray-400 rounded-full cursor-default">
-      {tagName}
+    <span
+      className="px-2 py-1 text-xs text-center border-2 border-gray-400 rounded-full cursor-pointer"
+      style={{ width }}
+      onMouseEnter={() => setIsShowingRemove(true)}
+      onMouseLeave={() => setIsShowingRemove(false)}
+      onClick={() => {
+        dispatch(removeTag({ fontName, tag }));
+      }}
+    >
+      {isShowingRemove ? <FontAwesomeIcon icon={faXmark} /> : tag}
     </span>
   );
 }
 
-function AddTag() {
+function AddTagButton({ fontName }) {
   const [isEditing, setIsEditing] = useState(false);
   const newTagRef = useRef(null);
   const dispatch = useDispatch();
@@ -103,8 +113,7 @@ function AddTag() {
           }}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              console.log(e.target.value);
-              // dispatch(addFont(e.target.value));
+              dispatch(addTag({ fontName, tag: e.target.value }));
               setIsEditing(false);
             } else if (e.key === "Escape") {
               setIsEditing(false);
@@ -131,7 +140,7 @@ function GoButton({ url }) {
   );
 }
 
-function AddFont() {
+function AddFontButton() {
   const [isEditing, setIsEditing] = useState(false);
   const newFontRef = useRef(null);
   const dispatch = useDispatch();
@@ -142,7 +151,7 @@ function AddFont() {
 
   return (
     <div
-      className="place-items-center rounded-3xl grid w-3/5 h-12 mx-auto bg-gray-200 border-4 border-gray-800 cursor-pointer"
+      className="place-items-center rounded-3xl grid w-2/5 h-16 mx-auto bg-gray-200 border-4 border-gray-200 cursor-pointer"
       onClick={(e) => {
         setIsEditing(true);
       }}

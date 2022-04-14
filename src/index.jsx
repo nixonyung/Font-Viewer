@@ -6,6 +6,8 @@ import store from "./app/store";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
+document.title = "Font Viewer";
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

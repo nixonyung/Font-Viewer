@@ -5,6 +5,6 @@ import fontsReducer from './fontsSlice'
 export default configureStore({
   reducer: {
     displayText: displayTextReducer,
-    fonts: fontsReducer
+    fontRecords: fontsReducer
   }
 })
