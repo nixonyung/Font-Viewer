@@ -7,7 +7,7 @@ export default function DisplayTextInput() {
   const dispatch = useDispatch();
   const displayTextInputRef = useRef(null);
   return (
-    <>
+    <div className="my-4">
       <label
         htmlFor="displayTextInput"
         className="gap-0 mr-2"
@@ -26,6 +26,6 @@ export default function DisplayTextInput() {
         ref={displayTextInputRef}
         onClick={() => displayTextInputRef.current.select()}
       ></input>
-    </>
+    </div>
   );
 }

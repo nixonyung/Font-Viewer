@@ -66,6 +66,23 @@ export const slice = createSlice({
       )
 
       saveRecords(state)
+    },
+    importRecords: (state, action) => {
+      const obj = JSON.parse(action.payload)
+      console.log(obj)
+
+      if (obj.records === undefined) return
+      if (!Array.isArray(obj.records)) return
+      if (
+        obj.records.some(
+          ({ fontName, tags }) =>
+            fontName === undefined || tags === undefined || !Array.isArray(tags)
+        )
+      )
+        return
+
+      state.records = obj.records
+      saveRecords(state)
     }
   }
 })
@@ -74,5 +91,11 @@ function saveRecords (state) {
   localStorage.setItem('fonts', JSON.stringify(state))
 }
 
-export const { addFont, removeFont, addTag, removeTag } = slice.actions
+export const {
+  addFont,
+  removeFont,
+  addTag,
+  removeTag,
+  importRecords
+} = slice.actions
 export default slice.reducer

@@ -3,14 +3,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
 import GoogleFontLoader from "react-google-font-loader";
 import { useDispatch, useSelector } from "react-redux";
-import { addFont, addTag, removeFont, removeTag } from "../app/fontsSlice";
+import { addFont, addTag, removeFont, removeTag } from "../app/fontRecordsSlice";
 
 export default function FontCards() {
-  const fontRecords = useSelector((state) => state.fontRecords.records);
+  const records = useSelector((state) => state.fontRecords.records);
 
   return (
     <div className="flex flex-col gap-4">
-      {fontRecords.map((fontRecord) => (
+      {records.map((fontRecord) => (
         <FontCard fontRecord={fontRecord} key={fontRecord.fontName} />
       ))}
 
@@ -36,7 +36,7 @@ function FontCard({ fontRecord }) {
         <AddTagButton fontName={fontName}></AddTagButton>
         <span className="flex-grow"></span>
 
-        <RemoveCard fontName={fontName} />
+        <RemoveCardButton fontName={fontName} />
       </div>
       <div className="flex items-end gap-6 mt-3">
         <GoogleFontLoader fonts={[{ font: fontRecord.fontName, weights: [400] }]} />
@@ -50,14 +50,13 @@ function FontCard({ fontRecord }) {
   );
 }
 
-function RemoveCard({ fontName }) {
+function RemoveCardButton({ fontName }) {
   const dispatch = useDispatch();
 
   return (
     <FontAwesomeIcon
       icon={faXmark}
-      className=" pb-3 pr-1 cursor-pointer"
-      style={{ color: "#00000080" }}
+      className=" hover:text-white pb-3 pr-1 text-gray-600 cursor-pointer"
       onClick={() => {
         dispatch(removeFont(fontName));
       }}
@@ -80,7 +79,11 @@ function Tag({ fontName, tag }) {
         dispatch(removeTag({ fontName, tag }));
       }}
     >
-      {isShowingRemove ? <FontAwesomeIcon icon={faXmark} /> : tag}
+      {isShowingRemove ? (
+        <FontAwesomeIcon icon={faXmark} className="text-gray-600" />
+      ) : (
+        tag
+      )}
     </span>
   );
 }
@@ -96,7 +99,7 @@ function AddTagButton({ fontName }) {
 
   return (
     <div
-      className="px-2 py-1 text-xs border-2 border-gray-400 rounded-full cursor-pointer"
+      className="opacity-40 hover:opacity-100 focus-within:opacity-100 px-2 py-1 text-xs border-2 border-gray-400 rounded-full cursor-pointer"
       onClick={(e) => {
         setIsEditing(true);
       }}
@@ -121,7 +124,7 @@ function AddTagButton({ fontName }) {
           }}
         />
       ) : (
-        <FontAwesomeIcon icon={faPlus} size="1x" style={{ color: "#00000080" }} />
+        <FontAwesomeIcon icon={faPlus} className="text-gray-600" />
       )}
     </div>
   );
@@ -151,7 +154,7 @@ function AddFontButton() {
 
   return (
     <div
-      className="place-items-center rounded-3xl grid w-2/5 h-16 mx-auto bg-gray-200 border-4 border-gray-200 cursor-pointer"
+      className="place-items-center rounded-3xl hover:opacity-100 focus-within:opacity-100 opacity-40 grid w-2/5 h-16 mx-auto bg-gray-200 border-4 border-gray-200 cursor-pointer"
       onClick={(e) => {
         setIsEditing(true);
       }}
@@ -173,7 +176,7 @@ function AddFontButton() {
           }}
         />
       ) : (
-        <FontAwesomeIcon icon={faPlus} size="2x" style={{ color: "#00000080" }} />
+        <FontAwesomeIcon icon={faPlus} size="2x" className="text-gray-600" />
       )}
     </div>
   );
