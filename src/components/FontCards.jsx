@@ -1,10 +1,13 @@
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
 import GoogleFontLoader from "react-google-font-loader";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addFont, removeFont } from "../app/fontsSlice";
 
-export default function FontCards({ fonts }) {
+export default function FontCards() {
+  const fonts = useSelector((state) => state.fonts);
+
   return (
     <div className="flex flex-col gap-4">
       {fonts?.fonts.map((font) => (
@@ -36,9 +39,11 @@ function FontCard({ font }) {
           <Tag tagName={tag} key={tag} />
         ))}
         <AddTag></AddTag>
+        <span className="flex-grow"></span>
+        <RemoveCard fontName={font.name} />
       </div>
       <div className="flex items-end gap-6 mt-3">
-        <p style={{ fontFamily: font }} className="w-full text-2xl">
+        <p style={{ fontFamily: font.name }} className="w-full text-2xl">
           {displayText}
         </p>
         <GoButton url={url}></GoButton>
@@ -47,9 +52,24 @@ function FontCard({ font }) {
   );
 }
 
+function RemoveCard({ fontName }) {
+  const dispatch = useDispatch();
+
+  return (
+    <FontAwesomeIcon
+      icon={faXmark}
+      className=" pb-3 pr-1 cursor-pointer"
+      style={{ color: "#00000080" }}
+      onClick={() => {
+        dispatch(removeFont(fontName));
+      }}
+    />
+  );
+}
+
 function Tag({ tagName }) {
   return (
-    <span className="px-2 py-1 text-xs border-2 border-gray-400 rounded-full">
+    <span className="px-2 py-1 text-xs border-2 border-gray-400 rounded-full cursor-default">
       {tagName}
     </span>
   );
@@ -58,6 +78,7 @@ function Tag({ tagName }) {
 function AddTag() {
   const [isEditing, setIsEditing] = useState(false);
   const newTagRef = useRef(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isEditing) newTagRef.current.select();
@@ -83,6 +104,7 @@ function AddTag() {
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               console.log(e.target.value);
+              // dispatch(addFont(e.target.value));
               setIsEditing(false);
             } else if (e.key === "Escape") {
               setIsEditing(false);
@@ -112,6 +134,7 @@ function GoButton({ url }) {
 function AddFont() {
   const [isEditing, setIsEditing] = useState(false);
   const newFontRef = useRef(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isEditing) newFontRef.current.select();
@@ -133,7 +156,7 @@ function AddFont() {
           }}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              console.log(e.target.value);
+              dispatch(addFont(e.target.value));
               setIsEditing(false);
             } else if (e.key === "Escape") {
               setIsEditing(false);

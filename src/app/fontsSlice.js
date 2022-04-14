@@ -1,16 +1,37 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+const fontsDefault = {
+  fonts: [
+    {
+      name: 'Nanum Brush Script',
+      tags: ['haha', 'hehe']
+    }
+  ]
+}
+
 export const slice = createSlice({
   name: 'fonts',
-  initialState: localStorage.getItem('fonts') ?? {},
+  initialState: localStorage.getItem('fonts')
+    ? JSON.parse(localStorage.getItem('fonts'))
+    : fontsDefault,
   reducers: {
-    // updateDisplayText: (state, action) => {
-    //   let displayText = action.payload
-    //   localStorage.setItem('displayText', displayText)
-    //   return displayText
-    // }
+    addFont: (state, action) => {
+      state.fonts.push({ name: action.payload, tags: [] })
+      saveFonts(state)
+    },
+    removeFont: (state, action) => {
+      const idx = state.fonts.findIndex(font => font.name === action.payload)
+      if (idx !== -1) {
+        state.fonts.splice(idx, 1)
+      }
+      saveFonts(state)
+    }
   }
 })
 
-// export const { updateDisplayText } = slice.actions
+function saveFonts (state) {
+  localStorage.setItem('fonts', JSON.stringify(state))
+}
+
+export const { addFont, removeFont } = slice.actions
 export default slice.reducer
