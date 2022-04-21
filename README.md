@@ -9,8 +9,8 @@
 
 ## TODO
 
-- update the list of fonts from Notion
-- adjustable font size / font style
+- filter font by tag
+- adjustable display font size / font style
 - reject invalid new font
 - reject duplicated fontName, tag
 - reject with noti
