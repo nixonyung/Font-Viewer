@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import availableTags from './availableTags'
 
 const LOCALSTORAGEPROPNAME = 'fonts'
 
@@ -31,10 +32,18 @@ export const slice = createSlice({
     },
 
     importRecords: (state, action) => {
-      const newState = JSON.parse(action.payload)
+      const importedRecord = JSON.parse(action.payload)
 
-      slice.caseReducers.saveRecords(newState)
-      return newState
+      const newFonts = []
+
+      Object.entries(importedRecord).forEach(([fontName, tag]) => {
+        if (tag !== availableTags.slice(-1)[0])
+          localStorage.setItem(fontName, tag)
+        newFonts.push(fontName)
+      })
+
+      slice.caseReducers.saveRecords(newFonts)
+      return newFonts
     },
 
     resetFonts: (state, action) => {

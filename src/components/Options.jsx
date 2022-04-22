@@ -1,5 +1,7 @@
+import useEventListener from "@use-it/event-listener";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import availableTags from "../app/availableTags";
 import { importRecords, resetFonts } from "../app/fontRecordsSlice";
 
 export default function Options() {
@@ -7,7 +9,7 @@ export default function Options() {
     <div className="flex flex-col gap-4 my-4">
       <Import />
       <Export />
-      <DefaultFonts />
+      <ResetFonts />
     </div>
   );
 }
@@ -38,8 +40,16 @@ function Import() {
 }
 
 function Export() {
-  const fontRecords = useSelector((store) => store.fonts);
+  const fonts = useSelector((store) => store.fonts);
   const [isShowingExportFontRecords, setIsShowingExportFontRecords] = useState(false);
+
+  const fontsWithTags = fonts.reduce(
+    (prev, fontName) => ({
+      ...prev,
+      [fontName]: localStorage.getItem(fontName) ?? availableTags.slice(-1)[0],
+    }),
+    {}
+  );
 
   return (
     <div>
@@ -51,24 +61,37 @@ function Export() {
       </button>
 
       {isShowingExportFontRecords && (
-        <span className="ml-4">{JSON.stringify(fontRecords)}</span>
+        <span className="ml-4">{JSON.stringify(fontsWithTags)}</span>
       )}
     </div>
   );
 }
 
-function DefaultFonts() {
+function ResetFonts() {
   const dispatch = useDispatch();
+  const [disabled, setDisabled] = useState(true);
+
+  useEventListener("keydown", ({ key }) => {
+    if (key === "Shift") setDisabled(false);
+  });
+  useEventListener("keyup", ({ key }) => {
+    if (key === "Shift") setDisabled(true);
+  });
 
   return (
-    <button
-      className="rounded-xl w-fit px-3 py-2 bg-blue-900"
-      onClick={() => {
-        dispatch(resetFonts());
-      }}
-      disabled
-    >
-      Use default fonts
-    </button>
+    <div>
+      <button
+        className="rounded-xl w-fit px-3 py-2 bg-blue-900"
+        onClick={() => {
+          dispatch(resetFonts());
+        }}
+        disabled={disabled}
+      >
+        Use default fonts
+      </button>
+      <span className="ml-3 text-xs">
+        (Hold Shift to enable the button, NO CONFIRMATION)
+      </span>
+    </div>
   );
 }

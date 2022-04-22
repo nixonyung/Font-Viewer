@@ -11,6 +11,7 @@
 
 - filter font by tag
 - adjustable display font size / font style
+  - slider
 - reject invalid new font
 - reject duplicated fontName, tag
 - reject with noti

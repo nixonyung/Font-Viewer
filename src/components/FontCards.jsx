@@ -66,7 +66,7 @@ function RemoveCardButton({ fontName }) {
 
 function Tags({ fontName }) {
   const [tag, setTag] = useState(
-    localStorage.getItem(fontName) ?? availableTags.slice(-1)
+    localStorage.getItem(fontName) ?? availableTags.slice(-1)[0]
   );
 
   const changeTag = (fontName, newTag) => {
