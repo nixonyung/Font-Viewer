@@ -5,25 +5,26 @@ import { useEffect, useRef, useState } from "react";
 import GoogleFontLoader from "react-google-font-loader";
 import { useDispatch, useSelector } from "react-redux";
 import availableTags from "../app/availableTags";
-import { addFont, changeTag, removeFont } from "../app/fontRecordsSlice";
+import { addFont, removeFont } from "../app/fontRecordsSlice";
 
 export default function FontCards() {
-  const records = useSelector((store) => store.fontRecords);
+  const fonts = useSelector((store) => store.fonts);
 
   return (
     <div className="flex flex-col gap-4">
-      {Object.keys(records).map((fontName) => (
-        <FontCard fontName={fontName} key={fontName} />
-      ))}
+      {fonts.map((fontName) => {
+        const removeCardButton = <RemoveCardButton fontName={fontName} />;
+
+        return <FontCard {...{ key: fontName, fontName, removeCardButton }} />;
+      })}
 
       <AddFontButton />
     </div>
   );
 }
 
-function FontCard({ fontName }) {
+function FontCard({ fontName, removeCardButton }) {
   const displayText = useSelector((store) => store.displayText);
-  const tag = useSelector((store) => store.fontRecords[fontName]);
 
   const url = `https://fonts.google.com/?query=${fontName.split(" ").join("+")}`;
 
@@ -34,8 +35,8 @@ function FontCard({ fontName }) {
 
         <span className="flex-grow"></span>
 
-        <Tags {...{ fontName, tag }}></Tags>
-        <RemoveCardButton fontName={fontName} />
+        <Tags fontName={fontName}></Tags>
+        {removeCardButton}
       </div>
       <div className="flex items-end gap-6 mt-3">
         <GoogleFontLoader fonts={[{ font: fontName, weights: [400] }]} />
@@ -63,8 +64,15 @@ function RemoveCardButton({ fontName }) {
   );
 }
 
-function Tags({ fontName, tag }) {
-  const dispatch = useDispatch();
+function Tags({ fontName }) {
+  const [tag, setTag] = useState(
+    localStorage.getItem(fontName) ?? availableTags.slice(-1)
+  );
+
+  const changeTag = (fontName, newTag) => {
+    setTag(newTag);
+    localStorage.setItem(fontName, newTag);
+  };
 
   return (
     <>
@@ -72,16 +80,16 @@ function Tags({ fontName, tag }) {
         row={true}
         value={tag}
         onChange={(e) => {
-          dispatch(changeTag({ fontName, tag: e.target.value }));
+          changeTag(fontName, e.target.value);
         }}
         defaultValue="other"
       >
-        {availableTags.map((tag) => (
+        {availableTags.map((availableTag) => (
           <FormControlLabel
-            key={tag}
-            value={tag}
+            key={availableTag}
+            value={availableTag}
             control={<Radio size="small" />}
-            label={<Typography sx={{ fontSize: "0.6rem" }}>{tag}</Typography>}
+            label={<Typography sx={{ fontSize: "0.6rem" }}>{availableTag}</Typography>}
           />
         ))}
       </RadioGroup>
@@ -128,6 +136,7 @@ function AddFontButton() {
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               dispatch(addFont(e.target.value));
+              // addFont(e.target.value);
               setIsEditing(false);
             } else if (e.key === "Escape") {
               setIsEditing(false);

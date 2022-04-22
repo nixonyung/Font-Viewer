@@ -1,15 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
-import availableTags from './availableTags'
 
 const LOCALSTORAGEPROPNAME = 'fonts'
 
-const fontsDefault = {
-  'Nanum Brush Script': 'Handwriting'
-}
+// const fontsDefault = {
+//   'Nanum Brush Script': 'Handwriting'
+// }
+const fontsDefault = ['Nanum Brush Script']
 
 export const slice = createSlice({
   name: 'fonts',
-  // initialState: fontsDefault,
   initialState: localStorage.getItem(LOCALSTORAGEPROPNAME)
     ? JSON.parse(localStorage.getItem(LOCALSTORAGEPROPNAME))
     : fontsDefault,
@@ -17,26 +16,18 @@ export const slice = createSlice({
     addFont: (state, action) => {
       const newFontName = action.payload
 
-      if (state[newFontName] === undefined)
-        state[newFontName] = availableTags.slice(-1)
+      if (state.indexOf(newFontName) === -1) state.push(newFontName)
 
       slice.caseReducers.saveRecords(state)
     },
 
     removeFont: (state, action) => {
-      const badFontName = action.payload
+      const removedFontName = action.payload
 
-      delete state[badFontName]
+      const newState = state.filter(fontName => fontName !== removedFontName)
 
-      slice.caseReducers.saveRecords(state)
-    },
-
-    changeTag: (state, action) => {
-      const { fontName, tag } = action.payload
-
-      state[fontName] = tag
-
-      slice.caseReducers.saveRecords(state)
+      slice.caseReducers.saveRecords(newState)
+      return newState
     },
 
     importRecords: (state, action) => {
@@ -44,6 +35,12 @@ export const slice = createSlice({
 
       slice.caseReducers.saveRecords(newState)
       return newState
+    },
+
+    resetFonts: (state, action) => {
+      localStorage.clear()
+      slice.caseReducers.saveRecords(fontsDefault)
+      return fontsDefault.slice()
     },
 
     saveRecords: (state, action) => {
@@ -63,5 +60,5 @@ export const slice = createSlice({
   }
 })
 
-export const { addFont, removeFont, changeTag, importRecords } = slice.actions
+export const { addFont, removeFont, importRecords, resetFonts } = slice.actions
 export default slice.reducer
