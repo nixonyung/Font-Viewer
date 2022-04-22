@@ -4,7 +4,7 @@ import Options from "../components/Options";
 
 function App() {
   return (
-    <div className="w-5/6 max-w-screen-md mx-auto my-8">
+    <div className="w-5/6 max-w-screen-lg mx-auto my-8">
       <DisplayTextInput />
       <Options />
       <FontCards />

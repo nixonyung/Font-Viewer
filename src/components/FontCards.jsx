@@ -1,19 +1,19 @@
 import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Checkbox, FormControlLabel, FormGroup, Typography } from "@mui/material";
+import { FormControlLabel, Radio, RadioGroup, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import GoogleFontLoader from "react-google-font-loader";
 import { useDispatch, useSelector } from "react-redux";
 import availableTags from "../app/availableTags";
-import { addFont, addTag, removeFont, removeTag } from "../app/fontRecordsSlice";
+import { addFont, changeTag, removeFont } from "../app/fontRecordsSlice";
 
 export default function FontCards() {
-  const records = useSelector((state) => state.fontRecords.records);
+  const records = useSelector((store) => store.fontRecords);
 
   return (
     <div className="flex flex-col gap-4">
-      {records.map((fontRecord) => (
-        <FontCard fontRecord={fontRecord} key={fontRecord.fontName} />
+      {Object.keys(records).map((fontName) => (
+        <FontCard fontName={fontName} key={fontName} />
       ))}
 
       <AddFontButton />
@@ -21,9 +21,10 @@ export default function FontCards() {
   );
 }
 
-function FontCard({ fontRecord }) {
-  const { fontName, tags } = fontRecord;
-  const displayText = useSelector((state) => state.displayText);
+function FontCard({ fontName }) {
+  const displayText = useSelector((store) => store.displayText);
+  const tag = useSelector((store) => store.fontRecords[fontName]);
+
   const url = `https://fonts.google.com/?query=${fontName.split(" ").join("+")}`;
 
   return (
@@ -33,11 +34,11 @@ function FontCard({ fontRecord }) {
 
         <span className="flex-grow"></span>
 
-        <Tags {...{ fontName, tags }}></Tags>
+        <Tags {...{ fontName, tag }}></Tags>
         <RemoveCardButton fontName={fontName} />
       </div>
       <div className="flex items-end gap-6 mt-3">
-        <GoogleFontLoader fonts={[{ font: fontRecord.fontName, weights: [400] }]} />
+        <GoogleFontLoader fonts={[{ font: fontName, weights: [400] }]} />
         <p style={{ fontFamily: fontName }} className="w-full text-2xl">
           {displayText}
         </p>
@@ -62,27 +63,28 @@ function RemoveCardButton({ fontName }) {
   );
 }
 
-function Tags({ fontName, tags }) {
+function Tags({ fontName, tag }) {
   const dispatch = useDispatch();
 
   return (
     <>
-      <FormGroup row={true}>
+      <RadioGroup
+        row={true}
+        value={tag}
+        onChange={(e) => {
+          dispatch(changeTag({ fontName, tag: e.target.value }));
+        }}
+        defaultValue="other"
+      >
         {availableTags.map((tag) => (
           <FormControlLabel
             key={tag}
-            control={<Checkbox checked={tags.includes(tag)} size="small" />}
-            onChange={(e) => {
-              if (e.target.checked) {
-                dispatch(addTag({ fontName, tag }));
-              } else {
-                dispatch(removeTag({ fontName, tag }));
-              }
-            }}
-            label={<Typography sx={{ fontSize: "0.8rem" }}>{tag}</Typography>}
+            value={tag}
+            control={<Radio size="small" />}
+            label={<Typography sx={{ fontSize: "0.6rem" }}>{tag}</Typography>}
           />
         ))}
-      </FormGroup>
+      </RadioGroup>
     </>
   );
 }

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateDisplayText } from "../app/displayTextSlice";
 
 export default function DisplayTextInput() {
-  const displayText = useSelector((state) => state.displayText);
+  const displayText = useSelector((store) => store.displayText);
   const dispatch = useDispatch();
   const displayTextInputRef = useRef(null);
   return (
