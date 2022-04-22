@@ -1,3 +1,4 @@
+import { StyledEngineProvider } from "@mui/material";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
@@ -10,9 +11,11 @@ document.title = "Font Viewer";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <StyledEngineProvider injectFirst>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </StyledEngineProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
