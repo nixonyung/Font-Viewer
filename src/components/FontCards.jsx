@@ -1,52 +1,63 @@
 import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FormControlLabel, Radio, RadioGroup, Typography } from "@mui/material";
+import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import GoogleFontLoader from "react-google-font-loader";
 import { useDispatch, useSelector } from "react-redux";
+import tw from "twin.macro";
 import availableTags from "../app/availableTags";
 import { addFont, removeFont } from "../app/fontsSlice";
+
+const SpacerStyl = tw.span`flex-grow`;
 
 export default function FontCards() {
   const fonts = useSelector((store) => store.fonts);
 
   return (
-    <div className="flex flex-col gap-4">
-      {fonts.map((fontName) => {
-        const removeCardButton = <RemoveCardButton fontName={fontName} />;
+    <>
+      <GoogleFontLoader fonts={fonts.map((font) => ({ font, weights: [400] }))} />
 
-        return <FontCard {...{ key: fontName, fontName, removeCardButton }} />;
-      })}
+      <div className="flex flex-col gap-4">
+        {fonts.map((fontName) => (
+          <FontCard
+            key={fontName}
+            fontName={fontName}
+            removeCardButton={<RemoveCardButton fontName={fontName} />}
+          />
+        ))}
 
-      <AddFontButton />
-    </div>
+        <AddFontButton />
+      </div>
+    </>
   );
 }
 
 function FontCard({ fontName, removeCardButton }) {
-  const displayText = useSelector((store) => store.displayText);
-
   const url = `https://fonts.google.com/?query=${fontName.split(" ").join("+")}`;
 
   return (
     <div className="p-3 pt-1 bg-gray-600 rounded-md">
       <div className="flex items-center gap-4">
         <span className="text-base text-gray-700">{fontName}</span>
-
-        <span className="flex-grow"></span>
-
+        <SpacerStyl />
         <Tags fontName={fontName}></Tags>
         {removeCardButton}
       </div>
       <div className="flex items-end gap-6 mt-3">
-        <GoogleFontLoader fonts={[{ font: fontName, weights: [400] }]} />
-        <p style={{ fontFamily: fontName }} className="w-full text-2xl">
-          {displayText}
-        </p>
-
+        <DisplayText fontName={fontName} />
         <GoButton url={url}></GoButton>
       </div>
     </div>
+  );
+}
+
+function DisplayText({ fontName }) {
+  const displayText = useSelector((store) => store.displayText);
+
+  return (
+    <p style={{ fontFamily: fontName }} className="w-full m-0 text-2xl">
+      {displayText}
+    </p>
   );
 }
 
@@ -78,19 +89,20 @@ function Tags({ fontName }) {
   return (
     <>
       <RadioGroup
-        row={true}
         value={tag}
+        defaultValue={availableTags.slice(-1)[0]}
         onChange={(e) => {
           changeTag(fontName, e.target.value);
         }}
-        defaultValue="other"
+        row
       >
         {availableTags.map((availableTag) => (
           <FormControlLabel
             key={availableTag}
             value={availableTag}
+            label={availableTag}
             control={<Radio size="small" />}
-            label={<Typography sx={{ fontSize: "0.6rem" }}>{availableTag}</Typography>}
+            componentsProps={{ typography: { className: "text-xs" } }}
           />
         ))}
       </RadioGroup>

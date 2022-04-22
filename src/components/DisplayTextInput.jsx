@@ -9,7 +9,6 @@ export default function DisplayTextInput() {
   return (
     <div className="my-4">
       <label
-        htmlFor="displayTextInput"
         className="gap-0 mr-2"
         onClick={() => displayTextInputRef.current.select()}
       >
@@ -17,14 +16,13 @@ export default function DisplayTextInput() {
       </label>
 
       <input
-        id="displayTextInput"
+        className="w-full mb-4"
+        ref={displayTextInputRef}
         value={displayText}
+        onClick={() => displayTextInputRef.current.select()}
         onChange={(event) => {
           dispatch(updateDisplayText(event.target.value));
         }}
-        className="w-full mb-4"
-        ref={displayTextInputRef}
-        onClick={() => displayTextInputRef.current.select()}
       ></input>
     </div>
   );

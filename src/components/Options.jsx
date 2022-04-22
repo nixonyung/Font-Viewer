@@ -1,6 +1,7 @@
 import useEventListener from "@use-it/event-listener";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import tw from "twin.macro";
 import availableTags from "../app/availableTags";
 import { importFonts, reloadFonts, resetFonts } from "../app/fontsSlice";
 
@@ -15,18 +16,17 @@ export default function Options() {
   );
 }
 
+const ButtonStyl = tw.button`rounded-xl px-3 py-2 bg-blue-900`;
+
 function Import() {
   const dispatch = useDispatch();
   const [isShowingImport, setIsShowingImport] = useState(false);
 
   return (
     <div className="flex">
-      <button
-        className="rounded-xl w-fit px-3 py-2 bg-blue-900"
-        onClick={() => setIsShowingImport(!isShowingImport)}
-      >
+      <ButtonStyl onClick={() => setIsShowingImport(!isShowingImport)}>
         Toggle Import
-      </button>
+      </ButtonStyl>
 
       {isShowingImport && (
         <input
@@ -54,12 +54,11 @@ function Export() {
 
   return (
     <div>
-      <button
-        className="rounded-xl px-3 py-2 bg-blue-900"
+      <ButtonStyl
         onClick={() => setIsShowingExportFontRecords(!isShowingExportFontRecords)}
       >
         Toggle Export
-      </button>
+      </ButtonStyl>
 
       {isShowingExportFontRecords && (
         <p className="ml-4">{JSON.stringify(fontsWithTags)}</p>
@@ -81,15 +80,14 @@ function ResetFonts() {
 
   return (
     <div>
-      <button
-        className="rounded-xl w-fit px-3 py-2 bg-blue-900"
+      <ButtonStyl
         onClick={() => {
           dispatch(resetFonts());
         }}
         disabled={disabled}
       >
         Use default fonts
-      </button>
+      </ButtonStyl>
       <span className="ml-3 text-xs">
         (Hold Shift to enable the button, NO CONFIRMATION)
       </span>
@@ -102,14 +100,13 @@ function ReloadFonts() {
 
   return (
     <div>
-      <button
-        className="rounded-xl w-fit px-3 py-2 bg-blue-900"
+      <ButtonStyl
         onClick={() => {
           dispatch(reloadFonts());
         }}
       >
         Reload
-      </button>
+      </ButtonStyl>
     </div>
   );
 }
