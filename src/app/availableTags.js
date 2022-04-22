@@ -1,7 +1,8 @@
 let availableTags = [
   'Casual',
-  'Formal',
   'Comic',
+  'Display',
+  'Formal',
   'Handwriting',
   'Cursive',
   'Stylish'

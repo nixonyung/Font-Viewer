@@ -2,7 +2,7 @@ import useEventListener from "@use-it/event-listener";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import availableTags from "../app/availableTags";
-import { importFonts, resetFonts } from "../app/fontsSlice";
+import { importFonts, reloadFonts, resetFonts } from "../app/fontsSlice";
 
 export default function Options() {
   return (
@@ -10,6 +10,7 @@ export default function Options() {
       <Import />
       <Export />
       <ResetFonts />
+      <ReloadFonts />
     </div>
   );
 }
@@ -24,7 +25,7 @@ function Import() {
         className="rounded-xl w-fit px-3 py-2 bg-blue-900"
         onClick={() => setIsShowingImport(!isShowingImport)}
       >
-        Import
+        Toggle Import
       </button>
 
       {isShowingImport && (
@@ -57,7 +58,7 @@ function Export() {
         className="rounded-xl px-3 py-2 bg-blue-900"
         onClick={() => setIsShowingExportFontRecords(!isShowingExportFontRecords)}
       >
-        Export
+        Toggle Export
       </button>
 
       {isShowingExportFontRecords && (
@@ -92,6 +93,23 @@ function ResetFonts() {
       <span className="ml-3 text-xs">
         (Hold Shift to enable the button, NO CONFIRMATION)
       </span>
+    </div>
+  );
+}
+
+function ReloadFonts() {
+  const dispatch = useDispatch();
+
+  return (
+    <div>
+      <button
+        className="rounded-xl w-fit px-3 py-2 bg-blue-900"
+        onClick={() => {
+          dispatch(reloadFonts());
+        }}
+      >
+        Reload
+      </button>
     </div>
   );
 }

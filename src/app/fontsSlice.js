@@ -49,25 +49,36 @@ export const slice = createSlice({
       return fontsDefault.slice()
     },
 
+    reloadFonts: (state, action) => {
+      // sort fonts
+      const newState = state.sort((a, b) => {
+        const aTagIdx = availableTags.indexOf(
+          localStorage.getItem(a) ?? availableTags.slice(-1)[0]
+        )
+        const bTagIdx = availableTags.indexOf(
+          localStorage.getItem(b) ?? availableTags.slice(-1)[0]
+        )
+
+        if (aTagIdx !== bTagIdx) return aTagIdx - bTagIdx
+
+        return a.localeCompare(b)
+      })
+
+      slice.caseReducers.saveFonts(newState)
+      return newState
+    },
+
     saveFonts: (state, action) => {
-      // const newState = state.sort((a, b) => {
-      //   const aTagIdx = availableTags.indexOf(
-      //     localStorage.getItem(a) ?? availableTags.slice(-1)[0]
-      //   )
-      //   const bTagIdx = availableTags.indexOf(
-      //     localStorage.getItem(b) ?? availableTags.slice(-1)[0]
-      //   )
-
-      //   if (aTagIdx !== bTagIdx) return aTagIdx - bTagIdx
-
-      //   return a.localeCompare(b)
-      // })
-
       localStorage.setItem(LOCALSTORAGEPROPNAME, JSON.stringify(state))
-      // return newState
     }
   }
 })
 
-export const { addFont, removeFont, importFonts, resetFonts } = slice.actions
+export const {
+  addFont,
+  removeFont,
+  importFonts,
+  resetFonts,
+  reloadFonts
+} = slice.actions
 export default slice.reducer

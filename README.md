@@ -15,6 +15,11 @@
 - reject invalid new font
 - reject duplicated fontName, tag
 - reject with noti
+- templates
+  - dialog, with dark/blurred background
+  - comic-like
+  - stupid quote
+  - formal
 
 ## Maybe useful
 

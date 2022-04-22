@@ -22,7 +22,7 @@ export default function DisplayTextInput() {
         onChange={(event) => {
           dispatch(updateDisplayText(event.target.value));
         }}
-        className="mb-4"
+        className="w-full mb-4"
         ref={displayTextInputRef}
         onClick={() => displayTextInputRef.current.select()}
       ></input>
