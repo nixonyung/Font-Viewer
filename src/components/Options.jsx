@@ -2,7 +2,7 @@ import useEventListener from "@use-it/event-listener";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import availableTags from "../app/availableTags";
-import { importRecords, resetFonts } from "../app/fontRecordsSlice";
+import { importFonts, resetFonts } from "../app/fontsSlice";
 
 export default function Options() {
   return (
@@ -31,7 +31,7 @@ function Import() {
         <input
           className="flex-grow ml-4"
           onKeyDown={(e) => {
-            if (e.key === "Enter") dispatch(importRecords(e.target.value));
+            if (e.key === "Enter") dispatch(importFonts(e.target.value));
           }}
         ></input>
       )}
@@ -61,7 +61,7 @@ function Export() {
       </button>
 
       {isShowingExportFontRecords && (
-        <span className="ml-4">{JSON.stringify(fontsWithTags)}</span>
+        <p className="ml-4">{JSON.stringify(fontsWithTags)}</p>
       )}
     </div>
   );

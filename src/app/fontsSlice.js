@@ -3,9 +3,6 @@ import availableTags from './availableTags'
 
 const LOCALSTORAGEPROPNAME = 'fonts'
 
-// const fontsDefault = {
-//   'Nanum Brush Script': 'Handwriting'
-// }
 const fontsDefault = ['Nanum Brush Script']
 
 export const slice = createSlice({
@@ -19,7 +16,7 @@ export const slice = createSlice({
 
       if (state.indexOf(newFontName) === -1) state.push(newFontName)
 
-      slice.caseReducers.saveRecords(state)
+      slice.caseReducers.saveFonts(state)
     },
 
     removeFont: (state, action) => {
@@ -27,47 +24,50 @@ export const slice = createSlice({
 
       const newState = state.filter(fontName => fontName !== removedFontName)
 
-      slice.caseReducers.saveRecords(newState)
+      slice.caseReducers.saveFonts(newState)
       return newState
     },
 
-    importRecords: (state, action) => {
+    importFonts: (state, action) => {
       const importedRecord = JSON.parse(action.payload)
 
-      const newFonts = []
+      const newState = []
 
       Object.entries(importedRecord).forEach(([fontName, tag]) => {
         if (tag !== availableTags.slice(-1)[0])
           localStorage.setItem(fontName, tag)
-        newFonts.push(fontName)
+        newState.push(fontName)
       })
 
-      slice.caseReducers.saveRecords(newFonts)
-      return newFonts
+      slice.caseReducers.saveFonts(newState)
+      return newState
     },
 
     resetFonts: (state, action) => {
       localStorage.clear()
-      slice.caseReducers.saveRecords(fontsDefault)
+      slice.caseReducers.saveFonts(fontsDefault)
       return fontsDefault.slice()
     },
 
-    saveRecords: (state, action) => {
-      // state.records.sort(({ fontName: a }, { fontName: b }) => a.localeCompare(b))
+    saveFonts: (state, action) => {
+      // const newState = state.sort((a, b) => {
+      //   const aTagIdx = availableTags.indexOf(
+      //     localStorage.getItem(a) ?? availableTags.slice(-1)[0]
+      //   )
+      //   const bTagIdx = availableTags.indexOf(
+      //     localStorage.getItem(b) ?? availableTags.slice(-1)[0]
+      //   )
 
-      // state.records.sort((a, b) => {
-      //   let i = availableTags.length
-      //   if (a.tags.length) i = availableTags.indexOf(a.tags[0])
-      //   let j = availableTags.length
-      //   if (b.tags.length) j = availableTags.indexOf(b.tags[0])
+      //   if (aTagIdx !== bTagIdx) return aTagIdx - bTagIdx
 
-      //   return i - j
+      //   return a.localeCompare(b)
       // })
 
       localStorage.setItem(LOCALSTORAGEPROPNAME, JSON.stringify(state))
+      // return newState
     }
   }
 })
 
-export const { addFont, removeFont, importRecords, resetFonts } = slice.actions
+export const { addFont, removeFont, importFonts, resetFonts } = slice.actions
 export default slice.reducer

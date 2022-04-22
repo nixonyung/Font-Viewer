@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import GoogleFontLoader from "react-google-font-loader";
 import { useDispatch, useSelector } from "react-redux";
 import availableTags from "../app/availableTags";
-import { addFont, removeFont } from "../app/fontRecordsSlice";
+import { addFont, removeFont } from "../app/fontsSlice";
 
 export default function FontCards() {
   const fonts = useSelector((store) => store.fonts);
@@ -71,7 +71,8 @@ function Tags({ fontName }) {
 
   const changeTag = (fontName, newTag) => {
     setTag(newTag);
-    localStorage.setItem(fontName, newTag);
+    if (newTag === availableTags.slice(-1)[0]) localStorage.removeItem(fontName);
+    else localStorage.setItem(fontName, newTag);
   };
 
   return (

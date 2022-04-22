@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import displayTextReducer from './displayTextSlice'
-import fontsReducer from './fontRecordsSlice'
+import fontsReducer from './fontsSlice'
 
 export default configureStore({
   reducer: {
