@@ -12,11 +12,12 @@ export default function Options() {
       <Export />
       <ResetFonts />
       <ReloadFonts />
+      <Anchors />
     </div>
   );
 }
 
-const ButtonStyl = tw.button`rounded-xl px-3 py-2 bg-blue-900`;
+const ButtonStyl = tw.button`rounded-xl px-3 py-2 bg-blue-900 text-white cursor-pointer disabled:cursor-auto`;
 
 function Import() {
   const dispatch = useDispatch();
@@ -107,6 +108,19 @@ function ReloadFonts() {
       >
         Reload
       </ButtonStyl>
+    </div>
+  );
+}
+
+function Anchors() {
+  return (
+    <div className="flex items-center gap-4">
+      <span>Go to: </span>
+      {availableTags.map((tag) => (
+        <a href={`#${tag}`} className="w-max">
+          <ButtonStyl className="cursor-pointer">{tag}</ButtonStyl>
+        </a>
+      ))}
     </div>
   );
 }

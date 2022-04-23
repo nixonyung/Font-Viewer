@@ -1,78 +1,78 @@
-IBM Plex Sans
-Open Sans
-Recursive
-Helvetica
-Roboto
-Roboto Slab
-Comfortaa
-Georgia
-Times New Roman
-Lora
-Cormorant Garamond
-Bodoni Moda
-Comic Sans
-Comic Neue
-Iosevka
-Comforter Brush
-Meddon
-Rock Salt
 Alien-Twits
-Comic Sans
-MedievalSharp
-Orbitron
-League Gothic
-Bangers
-Amatic SE
-Roboto Condensed
-Raleway
-Merriweather
-Playfair Display
-Inspiration
-Hurricane
-Dancing Script
-Shadows into Light
-Satisfy
-Great Vibes
-Caveat
-Indie Flower
-Hahmlet
-Tangerine
-Handlee
 Allura
-Bad Script
-Marck Script
-Stint Ultra Condensed
-BioRhyme
-Spectral
-Old Standard TT
-Oxygen
-Roboto Slab
-DotGothic16
-Calligraffitti
-Montserrat
-Didact Gothic
-Righteous
-Press Start 2P
+Amatic SE
 Audiowide
-Gruppo
-Nothing you could do
-italianno
-Fredericka the Great
-Cinzel Decorative
-Sofia
-Oooh Baby
-Twinkle Star
-Turret Road
+Bad Script
+Bangers
+BioRhyme
+Bodoni Moda
 Bungee Shade
-Gravitas One
-Emilys Candy
-Megrim
-Raleway Dots
-Codystar
+Calligraffitti
+Caveat
 Charmonman
-Julee
-Nanum Brush Script
+Cinzel Decorative
+Codystar
+Comfortaa
+Comforter Brush
+Comic Neue
+Comic Sans
+Comic Sans
+Cormorant Garamond
+Dancing Script
+Didact Gothic
+DotGothic16
+Emilys Candy
+Fredericka the Great
+Georgia
+Gravitas One
+Great Vibes
+Gruppo
+Hahmlet
+Handlee
+Helvetica
+Hurricane
+IBM Plex Sans
+Indie Flower
 Ingrid Darling
-Nosifer
+Inspiration
+Iosevka
+italianno
+Julee
+League Gothic
+Lora
+Marck Script
+Meddon
+MedievalSharp
+Megrim
+Merriweather
+Montserrat
+Nanum Brush Script
 Norican
+Nosifer
+Nothing you could do
 Noxie One
+Old Standard TT
+Oooh Baby
+Open Sans
+Orbitron
+Oxygen
+Playfair Display
+Press Start 2P
+Raleway
+Raleway Dots
+Recursive
+Righteous
+Roboto
+Roboto Condensed
+Roboto Slab
+Roboto Slab
+Rock Salt
+Satisfy
+Shadows into Light
+Sofia
+Spectral
+Stint Ultra Condensed
+Tangerine
+Times New Roman
+Turret Road
+Twinkle Star

@@ -8,23 +8,38 @@ import tw from "twin.macro";
 import availableTags from "../app/availableTags";
 import { addFont, removeFont } from "../app/fontsSlice";
 
+const FontNameStyl = tw.span`text-gray-400`;
 const SpacerStyl = tw.span`flex-grow`;
 
 export default function FontCards() {
   const fonts = useSelector((store) => store.fonts);
+  let lastTag = "";
 
   return (
     <>
       <GoogleFontLoader fonts={fonts.map((font) => ({ font, weights: [400] }))} />
 
       <div className="flex flex-col gap-4">
-        {fonts.map((fontName) => (
-          <FontCard
-            key={fontName}
-            fontName={fontName}
-            removeCardButton={<RemoveCardButton fontName={fontName} />}
-          />
-        ))}
+        {fonts.map((fontName) => {
+          const thisTag = localStorage.getItem(fontName) ?? availableTags.slice(-1)[0];
+          const withHeader = thisTag !== lastTag;
+          lastTag = thisTag;
+
+          return (
+            <>
+              {withHeader && (
+                <h1 id={thisTag} className="scroll-mt-6 mt-12">
+                  {thisTag}
+                </h1>
+              )}
+              <FontCard
+                key={fontName}
+                fontName={fontName}
+                removeCardButton={<RemoveCardButton fontName={fontName} />}
+              />
+            </>
+          );
+        })}
 
         <AddFontButton />
       </div>
@@ -38,7 +53,7 @@ function FontCard({ fontName, removeCardButton }) {
   return (
     <div className="p-3 pt-1 bg-gray-600 rounded-md">
       <div className="flex items-center gap-4">
-        <span className="text-base text-gray-700">{fontName}</span>
+        <FontNameStyl>{fontName}</FontNameStyl>
         <SpacerStyl />
         <Tags fontName={fontName}></Tags>
         {removeCardButton}
@@ -55,7 +70,10 @@ function DisplayText({ fontName }) {
   const displayText = useSelector((store) => store.displayText);
 
   return (
-    <p style={{ fontFamily: fontName }} className="w-full m-0 text-2xl">
+    <p
+      style={{ fontFamily: `${fontName}, Alien Twits` }}
+      className="w-full m-0 text-2xl"
+    >
       {displayText}
     </p>
   );
@@ -67,7 +85,7 @@ function RemoveCardButton({ fontName }) {
   return (
     <FontAwesomeIcon
       icon={faXmark}
-      className=" hover:text-white pr-1 text-gray-600 cursor-pointer"
+      className=" hover:text-white pr-1 text-gray-400 cursor-pointer"
       onClick={() => {
         dispatch(removeFont(fontName));
       }}
@@ -116,7 +134,7 @@ function GoButton({ url }) {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="rounded-xl px-4 py-2 mr-3 bg-gray-800"
+      className="rounded-xl px-4 py-2 mr-3 text-white no-underline bg-gray-800"
     >
       Go
     </a>
@@ -134,7 +152,7 @@ function AddFontButton() {
 
   return (
     <div
-      className="place-items-center rounded-3xl hover:opacity-100 focus-within:opacity-100 opacity-40 grid w-2/5 h-16 mx-auto bg-gray-200 border-4 border-gray-200 cursor-pointer"
+      className="place-items-center rounded-3xl hover:opacity-100 focus-within:opacity-100 opacity-40 grid w-2/5 h-16 mx-auto bg-gray-400 border-4 border-gray-200 cursor-pointer"
       onClick={(e) => {
         setIsEditing(true);
       }}
@@ -142,14 +160,14 @@ function AddFontButton() {
       {isEditing ? (
         <input
           ref={newFontRef}
-          className="text-center bg-gray-200 outline-none"
+          className="text-center bg-gray-400 border-none outline-none"
           onBlur={(e) => {
             setIsEditing(false);
           }}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               dispatch(addFont(e.target.value));
-              // addFont(e.target.value);
+              // addFont(e.target.value)
               setIsEditing(false);
             } else if (e.key === "Escape") {
               setIsEditing(false);

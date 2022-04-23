@@ -16,7 +16,7 @@ export default function DisplayTextInput() {
       </label>
 
       <input
-        className="w-full mb-4"
+        className="w-full mb-4 text-white bg-gray-600"
         ref={displayTextInputRef}
         value={displayText}
         onClick={() => displayTextInputRef.current.select()}
