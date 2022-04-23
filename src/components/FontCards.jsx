@@ -1,7 +1,7 @@
 import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import GoogleFontLoader from "react-google-font-loader";
 import { useDispatch, useSelector } from "react-redux";
 import availableTags from "../app/availableTags";
@@ -23,14 +23,13 @@ export default function FontCards() {
           lastTag = thisTag;
 
           return (
-            <>
+            <Fragment key={fontName}>
               {withHeader && <TagHeader tag={thisTag} />}
               <FontCard
-                key={fontName}
                 fontName={fontName}
                 removeCardButton={<RemoveCardButton fontName={fontName} />}
               />
-            </>
+            </Fragment>
           );
         })}
 
