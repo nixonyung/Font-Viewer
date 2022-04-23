@@ -14,7 +14,9 @@ export default function FontCards() {
 
   return (
     <>
-      <GoogleFontLoader fonts={fonts.map((font) => ({ font, weights: [400] }))} />
+      <GoogleFontLoader
+        fonts={fonts.map((font) => ({ font, weights: [400, "bold"] }))}
+      />
 
       <div className="flex flex-col gap-4">
         {fonts.map((fontName) => {
@@ -101,7 +103,7 @@ function AddFontButton() {
 
   return (
     <div
-      className="place-items-center rounded-3xl hover:opacity-100 focus-within:opacity-100 opacity-40 grid w-2/5 h-16 mx-auto bg-gray-400 border-4 border-gray-200 cursor-pointer"
+      className="place-items-center rounded-3xl hover:opacity-100 focus-within:opacity-100 opacity-40 grid w-2/5 h-16 mx-auto bg-gray-400 cursor-pointer"
       onClick={(e) => {
         setIsEditing(true);
       }}
@@ -148,10 +150,15 @@ function FontName({ children, ...props }) {
 
 function DisplayText({ fontName }) {
   const displayText = useSelector((store) => store.displayText);
+  const styles = useSelector((store) => store.displayTextOptions.styles);
 
   return (
     <p
-      style={{ fontFamily: `${fontName}, Alien Twits` }}
+      style={{
+        fontFamily: `${fontName}, Alien Twits`,
+        fontWeight: styles.includes("bold") ? "bold" : "",
+        fontStyle: styles.includes("italic") ? "italic" : "",
+      }}
       className="w-full m-0 text-2xl"
     >
       {displayText}

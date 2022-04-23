@@ -1,7 +1,10 @@
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import useEventListener from "@use-it/event-listener";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import availableTags from "../app/availableTags";
+import { availableStyles } from "../app/availableTextOptions";
+import { updateStyles } from "../app/displayTextOptionsSlice";
 import { importFonts, reloadFonts, resetFonts } from "../app/fontsSlice";
 import getFontTag from "../utils/getFontTag";
 
@@ -13,6 +16,7 @@ export default function Options() {
       <ResetFonts />
       <ReloadFonts />
       <Anchors />
+      <TextStyles />
     </div>
   );
 }
@@ -115,7 +119,7 @@ function Anchors() {
     <div className="flex items-center gap-4">
       <span>Go to: </span>
       {availableTags.map((tag) => (
-        <a href={`#${tag}`} className="w-max">
+        <a key={tag} href={`#${tag}`} className="w-max">
           <BlueButton>{tag}</BlueButton>
         </a>
       ))}
@@ -131,5 +135,30 @@ function BlueButton({ children, ...props }) {
     >
       {children}
     </button>
+  );
+}
+
+function TextStyles() {
+  const styles = useSelector((store) => store.displayTextOptions.styles);
+  const dispatch = useDispatch();
+
+  return (
+    <ToggleButtonGroup
+      value={styles}
+      onChange={(e, newStyles) => {
+        dispatch(updateStyles(newStyles));
+      }}
+    >
+      {availableStyles.map((style) => (
+        <ToggleButton
+          value={style}
+          className={`capitalize text-white border-2 border-solid border-gray-800 ${
+            styles.includes(style) && "bg-gray-600"
+          }`}
+        >
+          {style}
+        </ToggleButton>
+      ))}
+    </ToggleButtonGroup>
   );
 }
