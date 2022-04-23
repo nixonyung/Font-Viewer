@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import getFontTag from '../utils/getFontTag'
 import availableTags from './availableTags'
 
 const LOCALSTORAGEPROPNAME = 'fonts'
@@ -51,17 +52,13 @@ export const slice = createSlice({
 
     reloadFonts: (state, action) => {
       // sort fonts
-      const newState = state.sort((a, b) => {
-        const aTagIdx = availableTags.indexOf(
-          localStorage.getItem(a) ?? availableTags.slice(-1)[0]
-        )
-        const bTagIdx = availableTags.indexOf(
-          localStorage.getItem(b) ?? availableTags.slice(-1)[0]
-        )
+      const newState = state.sort((fontName1, fontName2) => {
+        const TagIdx1 = availableTags.indexOf(getFontTag(fontName1))
+        const TagIdx2 = availableTags.indexOf(getFontTag(fontName2))
 
-        if (aTagIdx !== bTagIdx) return aTagIdx - bTagIdx
+        if (TagIdx1 !== TagIdx2) return TagIdx1 - TagIdx2
 
-        return a.localeCompare(b)
+        return fontName1.localeCompare(fontName2)
       })
 
       slice.caseReducers.saveFonts(newState)

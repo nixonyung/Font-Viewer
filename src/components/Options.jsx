@@ -1,9 +1,9 @@
 import useEventListener from "@use-it/event-listener";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import tw from "twin.macro";
 import availableTags from "../app/availableTags";
 import { importFonts, reloadFonts, resetFonts } from "../app/fontsSlice";
+import getFontTag from "../utils/getFontTag";
 
 export default function Options() {
   return (
@@ -17,21 +17,19 @@ export default function Options() {
   );
 }
 
-const ButtonStyl = tw.button`rounded-xl px-3 py-2 bg-blue-900 text-white cursor-pointer disabled:cursor-auto`;
-
 function Import() {
   const dispatch = useDispatch();
   const [isShowingImport, setIsShowingImport] = useState(false);
 
   return (
     <div className="flex">
-      <ButtonStyl onClick={() => setIsShowingImport(!isShowingImport)}>
+      <BlueButton onClick={() => setIsShowingImport(!isShowingImport)}>
         Toggle Import
-      </ButtonStyl>
+      </BlueButton>
 
       {isShowingImport && (
         <input
-          className="flex-grow ml-4"
+          className="flex-grow ml-4 bg-gray-600"
           onKeyDown={(e) => {
             if (e.key === "Enter") dispatch(importFonts(e.target.value));
           }}
@@ -48,18 +46,18 @@ function Export() {
   const fontsWithTags = fonts.reduce(
     (prev, fontName) => ({
       ...prev,
-      [fontName]: localStorage.getItem(fontName) ?? availableTags.slice(-1)[0],
+      [fontName]: getFontTag(fontName),
     }),
     {}
   );
 
   return (
     <div>
-      <ButtonStyl
+      <BlueButton
         onClick={() => setIsShowingExportFontRecords(!isShowingExportFontRecords)}
       >
         Toggle Export
-      </ButtonStyl>
+      </BlueButton>
 
       {isShowingExportFontRecords && (
         <p className="ml-4">{JSON.stringify(fontsWithTags)}</p>
@@ -81,14 +79,14 @@ function ResetFonts() {
 
   return (
     <div>
-      <ButtonStyl
+      <BlueButton
         onClick={() => {
           dispatch(resetFonts());
         }}
         disabled={disabled}
       >
         Use default fonts
-      </ButtonStyl>
+      </BlueButton>
       <span className="ml-3 text-xs">
         (Hold Shift to enable the button, NO CONFIRMATION)
       </span>
@@ -101,13 +99,13 @@ function ReloadFonts() {
 
   return (
     <div>
-      <ButtonStyl
+      <BlueButton
         onClick={() => {
           dispatch(reloadFonts());
         }}
       >
         Reload
-      </ButtonStyl>
+      </BlueButton>
     </div>
   );
 }
@@ -118,9 +116,20 @@ function Anchors() {
       <span>Go to: </span>
       {availableTags.map((tag) => (
         <a href={`#${tag}`} className="w-max">
-          <ButtonStyl className="cursor-pointer">{tag}</ButtonStyl>
+          <BlueButton>{tag}</BlueButton>
         </a>
       ))}
     </div>
+  );
+}
+
+function BlueButton({ children, ...props }) {
+  return (
+    <button
+      className="rounded-xl disabled:cursor-auto px-3 py-2 text-white bg-blue-900 cursor-pointer"
+      {...props}
+    >
+      {children}
+    </button>
   );
 }

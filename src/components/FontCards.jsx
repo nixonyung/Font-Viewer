@@ -4,12 +4,9 @@ import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import GoogleFontLoader from "react-google-font-loader";
 import { useDispatch, useSelector } from "react-redux";
-import tw from "twin.macro";
 import availableTags from "../app/availableTags";
 import { addFont, removeFont } from "../app/fontsSlice";
-
-const FontNameStyl = tw.span`text-gray-400`;
-const SpacerStyl = tw.span`flex-grow`;
+import getFontTag from "../utils/getFontTag";
 
 export default function FontCards() {
   const fonts = useSelector((store) => store.fonts);
@@ -21,17 +18,13 @@ export default function FontCards() {
 
       <div className="flex flex-col gap-4">
         {fonts.map((fontName) => {
-          const thisTag = localStorage.getItem(fontName) ?? availableTags.slice(-1)[0];
+          const thisTag = getFontTag(fontName);
           const withHeader = thisTag !== lastTag;
           lastTag = thisTag;
 
           return (
             <>
-              {withHeader && (
-                <h1 id={thisTag} className="scroll-mt-6 mt-12">
-                  {thisTag}
-                </h1>
-              )}
+              {withHeader && <TagHeader tag={thisTag} />}
               <FontCard
                 key={fontName}
                 fontName={fontName}
@@ -53,8 +46,7 @@ function FontCard({ fontName, removeCardButton }) {
   return (
     <div className="p-3 pt-1 bg-gray-600 rounded-md">
       <div className="flex items-center gap-4">
-        <FontNameStyl>{fontName}</FontNameStyl>
-        <SpacerStyl />
+        <FontName>{fontName}</FontName>
         <Tags fontName={fontName}></Tags>
         {removeCardButton}
       </div>
@@ -66,37 +58,8 @@ function FontCard({ fontName, removeCardButton }) {
   );
 }
 
-function DisplayText({ fontName }) {
-  const displayText = useSelector((store) => store.displayText);
-
-  return (
-    <p
-      style={{ fontFamily: `${fontName}, Alien Twits` }}
-      className="w-full m-0 text-2xl"
-    >
-      {displayText}
-    </p>
-  );
-}
-
-function RemoveCardButton({ fontName }) {
-  const dispatch = useDispatch();
-
-  return (
-    <FontAwesomeIcon
-      icon={faXmark}
-      className=" hover:text-white pr-1 text-gray-400 cursor-pointer"
-      onClick={() => {
-        dispatch(removeFont(fontName));
-      }}
-    />
-  );
-}
-
 function Tags({ fontName }) {
-  const [tag, setTag] = useState(
-    localStorage.getItem(fontName) ?? availableTags.slice(-1)[0]
-  );
+  const [tag, setTag] = useState(getFontTag(fontName));
 
   const changeTag = (fontName, newTag) => {
     setTag(newTag);
@@ -125,19 +88,6 @@ function Tags({ fontName }) {
         ))}
       </RadioGroup>
     </>
-  );
-}
-
-function GoButton({ url }) {
-  return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="rounded-xl px-4 py-2 mr-3 text-white no-underline bg-gray-800"
-    >
-      Go
-    </a>
   );
 }
 
@@ -178,5 +128,61 @@ function AddFontButton() {
         <FontAwesomeIcon icon={faPlus} size="2x" className="text-gray-600" />
       )}
     </div>
+  );
+}
+
+function TagHeader({ tag }) {
+  return (
+    <h1 id={tag} className="scroll-mt-6 mt-12">
+      {tag}
+    </h1>
+  );
+}
+
+function FontName({ children, ...props }) {
+  return (
+    <span className="flex-grow text-gray-400" {...props}>
+      {children}
+    </span>
+  );
+}
+
+function DisplayText({ fontName }) {
+  const displayText = useSelector((store) => store.displayText);
+
+  return (
+    <p
+      style={{ fontFamily: `${fontName}, Alien Twits` }}
+      className="w-full m-0 text-2xl"
+    >
+      {displayText}
+    </p>
+  );
+}
+
+function RemoveCardButton({ fontName }) {
+  const dispatch = useDispatch();
+
+  return (
+    <FontAwesomeIcon
+      icon={faXmark}
+      className=" hover:text-white pr-1 text-gray-400 cursor-pointer"
+      onClick={() => {
+        dispatch(removeFont(fontName));
+      }}
+    />
+  );
+}
+
+function GoButton({ url }) {
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="rounded-xl px-4 py-2 mr-3 text-white no-underline bg-gray-800"
+    >
+      Go
+    </a>
   );
 }

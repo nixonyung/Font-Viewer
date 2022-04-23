@@ -6,6 +6,7 @@ export default function DisplayTextInput() {
   const displayText = useSelector((store) => store.displayText);
   const dispatch = useDispatch();
   const displayTextInputRef = useRef(null);
+
   return (
     <div className="my-4">
       <label

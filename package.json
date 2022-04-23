@@ -21,7 +21,6 @@
     "react-google-font-loader": "^1.1.0",
     "react-redux": "^7.2.8",
     "react-scripts": "5.0.0",
-    "twin.macro": "^2.8.2",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
