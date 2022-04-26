@@ -1,2 +1,3 @@
-const availableStyles = ['bold', 'italic']
-export { availableStyles }
+const availableStyles = ['bold', 'italic', 'underline']
+
+export default availableStyles

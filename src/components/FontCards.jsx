@@ -151,6 +151,8 @@ function FontName({ children, ...props }) {
 function DisplayText({ fontName }) {
   const displayText = useSelector((store) => store.displayText);
   const styles = useSelector((store) => store.displayTextOptions.styles);
+  const letterSpacing = useSelector((store) => store.displayTextOptions.letterSpacing);
+  const fontSize = useSelector((store) => store.displayTextOptions.fontSize) + "rem";
 
   return (
     <p
@@ -158,8 +160,11 @@ function DisplayText({ fontName }) {
         fontFamily: `${fontName}, Alien Twits`,
         fontWeight: styles.includes("bold") ? "bold" : "",
         fontStyle: styles.includes("italic") ? "italic" : "",
+        textDecoration: styles.includes("underline") ? "underline" : "",
+        fontSize,
+        letterSpacing,
       }}
-      className="w-full m-0 text-2xl"
+      className="w-full m-0"
     >
       {displayText}
     </p>

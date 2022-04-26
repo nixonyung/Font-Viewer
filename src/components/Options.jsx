@@ -1,10 +1,23 @@
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  Slider,
+  Stack,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from "@mui/material";
+import { Box } from "@mui/system";
 import useEventListener from "@use-it/event-listener";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import availableTags from "../app/availableTags";
-import { availableStyles } from "../app/availableTextOptions";
-import { updateStyles } from "../app/displayTextOptionsSlice";
+import availableStyles from "../app/availableTextOptions";
+import {
+  updateFontSize,
+  updateLetterSpacing,
+  updateStyles,
+} from "../app/displayTextOptionsSlice";
 import { importFonts, reloadFonts, resetFonts } from "../app/fontsSlice";
 import getFontTag from "../utils/getFontTag";
 
@@ -142,23 +155,81 @@ function TextStyles() {
   const styles = useSelector((store) => store.displayTextOptions.styles);
   const dispatch = useDispatch();
 
+  function FontSizeSlider() {
+    const fontSize = useSelector((store) => store.displayTextOptions.fontSize);
+
+    return (
+      <Box>
+        <Typography textAlign="center">
+          font-size: {fontSize}rem
+          <FontAwesomeIcon
+            icon={faArrowsRotate}
+            className="ml-3 cursor-pointer"
+            onClick={() => dispatch(updateFontSize({ type: "reset" }))}
+          />
+        </Typography>
+        <Slider
+          min={0.1}
+          max={5.0}
+          step={0.1}
+          value={fontSize}
+          onChange={(e) => dispatch(updateFontSize(e.target.value))}
+          className="w-60"
+        />
+      </Box>
+    );
+  }
+
+  function LetterSpacingSlider() {
+    const letterSpacing = useSelector(
+      (store) => store.displayTextOptions.letterSpacing
+    );
+
+    return (
+      <Box>
+        <Typography textAlign="center">
+          letter-spacing: {letterSpacing}
+          <FontAwesomeIcon
+            icon={faArrowsRotate}
+            className="ml-3 cursor-pointer"
+            onClick={() => dispatch(updateLetterSpacing({ type: "reset" }))}
+          />
+        </Typography>
+        <Slider
+          min={0.0}
+          max={10.0}
+          step={0.1}
+          value={letterSpacing}
+          onChange={(e) => dispatch(updateLetterSpacing(e.target.value))}
+          className="w-60"
+        />
+      </Box>
+    );
+  }
+
   return (
-    <ToggleButtonGroup
-      value={styles}
-      onChange={(e, newStyles) => {
-        dispatch(updateStyles(newStyles));
-      }}
-    >
-      {availableStyles.map((style) => (
-        <ToggleButton
-          value={style}
-          className={`capitalize text-white border-2 border-solid border-gray-800 ${
-            styles.includes(style) && "bg-gray-600"
-          }`}
-        >
-          {style}
-        </ToggleButton>
-      ))}
-    </ToggleButtonGroup>
+    <Stack direction="row" spacing={4} alignItems="center">
+      <ToggleButtonGroup
+        value={styles}
+        onChange={(e, newStyles) => {
+          dispatch(updateStyles(newStyles));
+        }}
+      >
+        {availableStyles.map((style) => (
+          <ToggleButton
+            key={style}
+            value={style}
+            className={`capitalize text-white border-2 border-solid border-gray-800 ${
+              styles.includes(style) && "bg-gray-600"
+            }`}
+          >
+            {style}
+          </ToggleButton>
+        ))}
+      </ToggleButtonGroup>
+
+      <FontSizeSlider />
+      <LetterSpacingSlider />
+    </Stack>
   );
 }
