@@ -103,6 +103,7 @@ function AddFontButton() {
 
   return (
     <div
+      id="add-font"
       className="place-items-center rounded-3xl hover:opacity-100 focus-within:opacity-100 opacity-40 grid w-2/5 h-16 mx-auto bg-gray-400 cursor-pointer"
       onClick={(e) => {
         setIsEditing(true);

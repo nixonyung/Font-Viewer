@@ -1,5 +1,7 @@
-import { faArrowUpLong } from "@fortawesome/free-solid-svg-icons";
+import { faArrowDownLong, faArrowUpLong } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import useEventListener from "@use-it/event-listener";
+import { useState } from "react";
 import DisplayTextInput from "../components/DisplayTextInput";
 import FontCards from "../components/FontCards";
 import Options from "../components/Options";
@@ -18,12 +20,27 @@ function App() {
 }
 
 function BackToTop() {
+  const [isTop, setIsTop] = useState(true);
+  useEventListener("scroll", () => {
+    setIsTop(window.scrollY <= 100);
+  });
+
   return (
-    <a href="#top">
-      <button className="bottom-12 right-12 fixed w-12 h-12 bg-gray-300 rounded-full cursor-pointer">
-        <FontAwesomeIcon icon={faArrowUpLong} />
-      </button>
-    </a>
+    <>
+      {isTop ? (
+        <a href="#add-font">
+          <button className="bottom-12 right-12 fixed w-12 h-12 bg-gray-300 rounded-full cursor-pointer">
+            <FontAwesomeIcon icon={faArrowDownLong} />
+          </button>
+        </a>
+      ) : (
+        <a href="#top">
+          <button className="bottom-12 right-12 fixed w-12 h-12 bg-gray-300 rounded-full cursor-pointer">
+            <FontAwesomeIcon icon={faArrowUpLong} />
+          </button>
+        </a>
+      )}
+    </>
   );
 }
 
