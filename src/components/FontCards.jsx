@@ -15,7 +15,10 @@ export default function FontCards() {
   return (
     <>
       <GoogleFontLoader
-        fonts={fonts.map((font) => ({ font, weights: [400, "bold"] }))}
+        fonts={fonts.map((font) => ({
+          font,
+          weights: [...Array(9).keys()].map((v) => (v + 1) * 100),
+        }))}
       />
 
       <div className="flex flex-col gap-4">
@@ -27,10 +30,7 @@ export default function FontCards() {
           return (
             <Fragment key={fontName}>
               {withHeader && <TagHeader tag={thisTag} />}
-              <FontCard
-                fontName={fontName}
-                removeCardButton={<RemoveCardButton fontName={fontName} />}
-              />
+              <FontCard fontName={fontName} />
             </Fragment>
           );
         })}
@@ -41,55 +41,120 @@ export default function FontCards() {
   );
 }
 
-function FontCard({ fontName, removeCardButton }) {
-  const url = `https://fonts.google.com/?query=${fontName.split(" ").join("+")}`;
-
+function TagHeader({ tag }) {
   return (
-    <div className="p-3 pt-1 bg-gray-600 rounded-md">
-      <div className="flex items-center gap-4">
-        <FontName>{fontName}</FontName>
-        <Tags fontName={fontName}></Tags>
-        {removeCardButton}
-      </div>
-      <div className="flex items-end gap-6 mt-3">
-        <DisplayText fontName={fontName} />
-        <GoButton url={url}></GoButton>
-      </div>
-    </div>
+    <h1 id={tag} className="scroll-mt-6 mt-12">
+      {tag}
+    </h1>
   );
 }
 
-function Tags({ fontName }) {
-  const [tag, setTag] = useState(getFontTag(fontName));
-
-  const changeTag = (fontName, newTag) => {
-    setTag(newTag);
-    if (newTag === availableTags.slice(-1)[0]) localStorage.removeItem(fontName);
-    else localStorage.setItem(fontName, newTag);
-  };
-
+function FontCard({ fontName }) {
   return (
-    <>
-      <RadioGroup
-        value={tag}
-        defaultValue={availableTags.slice(-1)[0]}
-        onChange={(e) => {
-          changeTag(fontName, e.target.value);
-        }}
-        row
-      >
-        {availableTags.map((availableTag) => (
-          <FormControlLabel
-            key={availableTag}
-            value={availableTag}
-            label={availableTag}
-            control={<Radio size="small" />}
-            componentsProps={{ typography: { className: "text-xs" } }}
-          />
-        ))}
-      </RadioGroup>
-    </>
+    <div className="p-3 pt-1 bg-gray-600 rounded-md">
+      <div className="flex items-center gap-4">
+        <FontName />
+        <Tags />
+        <RemoveCardButton />
+      </div>
+      <div className="flex items-end gap-6 mt-3">
+        <DisplayText fontName={fontName} />
+        <GoButton />
+      </div>
+    </div>
   );
+
+  function FontName() {
+    return <span className="flex-grow text-gray-400">{fontName}</span>;
+  }
+
+  function Tags() {
+    const [tag, setTag] = useState(getFontTag(fontName));
+
+    const changeTag = (fontName, newTag) => {
+      setTag(newTag);
+      if (newTag === availableTags.slice(-1)[0]) localStorage.removeItem(fontName);
+      else localStorage.setItem(fontName, newTag);
+    };
+
+    return (
+      <>
+        <RadioGroup
+          value={tag}
+          defaultValue={availableTags.slice(-1)[0]}
+          onChange={(e) => {
+            changeTag(fontName, e.target.value);
+          }}
+          row
+        >
+          {availableTags.map((availableTag) => (
+            <FormControlLabel
+              key={availableTag}
+              value={availableTag}
+              label={availableTag}
+              control={<Radio size="small" />}
+              componentsProps={{ typography: { className: "text-xs" } }}
+            />
+          ))}
+        </RadioGroup>
+      </>
+    );
+  }
+
+  function RemoveCardButton() {
+    const dispatch = useDispatch();
+
+    return (
+      <FontAwesomeIcon
+        icon={faXmark}
+        className=" hover:text-white pr-1 text-gray-400 cursor-pointer"
+        onClick={() => {
+          dispatch(removeFont(fontName));
+        }}
+      />
+    );
+  }
+
+  function DisplayText() {
+    const displayText = useSelector((store) => store.displayText);
+    const styles = useSelector((store) => store.displayTextOptions.styles);
+    const fontWeight = useSelector((store) => store.displayTextOptions.fontWeight);
+    const letterSpacing = useSelector(
+      (store) => store.displayTextOptions.letterSpacing
+    );
+    const fontSize = useSelector((store) => store.displayTextOptions.fontSize) + "rem";
+
+    return (
+      <p
+        style={{
+          fontFamily: `${fontName}, Alien Twits`,
+          fontWeight: styles.includes("bold") ? "bold" : fontWeight,
+          fontStyle: styles.includes("italic") ? "italic" : "",
+          textDecoration: styles.includes("underline") ? "underline" : "",
+          fontSize,
+          letterSpacing,
+        }}
+        className="w-full m-0"
+      >
+        {displayText}
+      </p>
+    );
+  }
+
+  function GoButton() {
+    const url = `https://fonts.google.com/?query=${fontName.split(" ").join("+")}`;
+
+    return (
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="rounded-xl px-4 py-2 mr-3 text-white no-underline bg-gray-800"
+      >
+        Go
+      </a>
+    );
+  }
 }
 
 function AddFontButton() {
@@ -130,71 +195,5 @@ function AddFontButton() {
         <FontAwesomeIcon icon={faPlus} size="2x" className="text-gray-600" />
       )}
     </div>
-  );
-}
-
-function TagHeader({ tag }) {
-  return (
-    <h1 id={tag} className="scroll-mt-6 mt-12">
-      {tag}
-    </h1>
-  );
-}
-
-function FontName({ children, ...props }) {
-  return (
-    <span className="flex-grow text-gray-400" {...props}>
-      {children}
-    </span>
-  );
-}
-
-function DisplayText({ fontName }) {
-  const displayText = useSelector((store) => store.displayText);
-  const styles = useSelector((store) => store.displayTextOptions.styles);
-  const letterSpacing = useSelector((store) => store.displayTextOptions.letterSpacing);
-  const fontSize = useSelector((store) => store.displayTextOptions.fontSize) + "rem";
-
-  return (
-    <p
-      style={{
-        fontFamily: `${fontName}, Alien Twits`,
-        fontWeight: styles.includes("bold") ? "bold" : "",
-        fontStyle: styles.includes("italic") ? "italic" : "",
-        textDecoration: styles.includes("underline") ? "underline" : "",
-        fontSize,
-        letterSpacing,
-      }}
-      className="w-full m-0"
-    >
-      {displayText}
-    </p>
-  );
-}
-
-function RemoveCardButton({ fontName }) {
-  const dispatch = useDispatch();
-
-  return (
-    <FontAwesomeIcon
-      icon={faXmark}
-      className=" hover:text-white pr-1 text-gray-400 cursor-pointer"
-      onClick={() => {
-        dispatch(removeFont(fontName));
-      }}
-    />
-  );
-}
-
-function GoButton({ url }) {
-  return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="rounded-xl px-4 py-2 mr-3 text-white no-underline bg-gray-800"
-    >
-      Go
-    </a>
   );
 }

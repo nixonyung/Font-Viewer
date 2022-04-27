@@ -2,24 +2,25 @@
 
 ## Get started
 
-1. Run `yarn dev`
+1. Run `yarn start`
 2. [Website at port 3000](http://localhost:3000)
-3. API at port 9000
-   1. [/api/fonts](http://localhost:9000/api/fonts)
 
 ## TODO
 
-- filter font by tag
-- adjustable display font size / font style
-  - slider
+- adjustable display font weight
 - reject invalid new font
-- reject duplicated fontName, tag
 - reject with noti
 - templates
   - dialog, with dark/blurred background
   - comic-like
   - stupid quote
   - formal
+
+## Things I learnt
+
+- Try Context API instead of Redux
+- Try Mantine
+- Nested Components
 
 ## Maybe useful
 
