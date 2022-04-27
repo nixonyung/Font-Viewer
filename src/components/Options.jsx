@@ -19,7 +19,7 @@ import {
   updateLetterSpacing,
   updateStyles,
 } from "../app/displayTextOptionsSlice";
-import { importFonts, reloadFonts, resetFonts } from "../app/fontsSlice";
+import { importFonts, resetFonts } from "../app/fontsSlice";
 import getFontTag from "../utils/getFontTag";
 
 export default function Options() {
@@ -28,7 +28,6 @@ export default function Options() {
       <Import />
       <Export />
       <ResetFonts />
-      <ReloadFonts />
       <Anchors />
       <TextStyles />
     </div>
@@ -119,22 +118,6 @@ function ResetFonts() {
       <span className="ml-3 text-xs">
         (Hold Shift to enable the button, NO CONFIRMATION)
       </span>
-    </div>
-  );
-}
-
-function ReloadFonts() {
-  const dispatch = useDispatch();
-
-  return (
-    <div>
-      <BlueButton
-        onClick={() => {
-          dispatch(reloadFonts());
-        }}
-      >
-        Reload
-      </BlueButton>
     </div>
   );
 }
