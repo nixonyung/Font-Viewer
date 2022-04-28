@@ -4,7 +4,7 @@ import {
   faRefresh,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Stack } from "@mui/material";
+import { Stack } from "@mantine/core";
 import useEventListener from "@use-it/event-listener";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -22,7 +22,7 @@ function App() {
         <FontCards />
       </div>
 
-      <Stack gap={3} className="bottom-12 right-12 fixed">
+      <Stack spacing={20} className="bottom-12 right-12 fixed">
         <BackToTopButton />
         <ReloadButton />
       </Stack>

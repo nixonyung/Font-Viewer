@@ -1,6 +1,6 @@
 import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import { Radio, RadioGroup } from "@mantine/core";
 import { Fragment, useEffect, useRef, useState } from "react";
 import GoogleFontLoader from "react-google-font-loader";
 import { useDispatch, useSelector } from "react-redux";
@@ -78,26 +78,22 @@ function FontCard({ fontName }) {
     };
 
     return (
-      <>
-        <RadioGroup
-          value={tag}
-          defaultValue={availableTags.slice(-1)[0]}
-          onChange={(e) => {
-            changeTag(fontName, e.target.value);
-          }}
-          row
-        >
-          {availableTags.map((availableTag) => (
-            <FormControlLabel
-              key={availableTag}
-              value={availableTag}
-              label={availableTag}
-              control={<Radio size="small" />}
-              componentsProps={{ typography: { className: "text-xs" } }}
-            />
-          ))}
-        </RadioGroup>
-      </>
+      <RadioGroup
+        value={tag}
+        defaultValue={availableTags.slice(-1)[0]}
+        onChange={(e) => {
+          changeTag(fontName, e);
+        }}
+        spacing="xs"
+        classNames={{
+          label: "text-gray-200 cursor-pointer",
+          radio: "cursor-pointer bg-black",
+        }}
+      >
+        {availableTags.map((availableTag) => (
+          <Radio key={availableTag} value={availableTag} label={availableTag} />
+        ))}
+      </RadioGroup>
     );
   }
 
@@ -117,20 +113,22 @@ function FontCard({ fontName }) {
 
   function DisplayText() {
     const displayText = useSelector((store) => store.displayText);
-    const styles = useSelector((store) => store.displayTextOptions.styles);
+    const bold = useSelector((store) => store.displayTextOptions.bold);
+    const italic = useSelector((store) => store.displayTextOptions.italic);
+    const underline = useSelector((store) => store.displayTextOptions.underline);
     const fontWeight = useSelector((store) => store.displayTextOptions.fontWeight);
+    const fontSize = useSelector((store) => store.displayTextOptions.fontSize) + "rem";
     const letterSpacing = useSelector(
       (store) => store.displayTextOptions.letterSpacing
     );
-    const fontSize = useSelector((store) => store.displayTextOptions.fontSize) + "rem";
 
     return (
       <p
         style={{
           fontFamily: `${fontName}, Alien Twits`,
-          fontWeight: styles.includes("bold") ? "bold" : fontWeight,
-          fontStyle: styles.includes("italic") ? "italic" : "",
-          textDecoration: styles.includes("underline") ? "underline" : "",
+          fontWeight: bold ? "bold" : fontWeight,
+          fontStyle: italic ? "italic" : "",
+          textDecoration: underline ? "underline" : "",
           fontSize,
           letterSpacing,
         }}
@@ -184,7 +182,6 @@ function AddFontButton() {
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               dispatch(addFont(e.target.value));
-              // addFont(e.target.value)
               setIsEditing(false);
             } else if (e.key === "Escape") {
               setIsEditing(false);

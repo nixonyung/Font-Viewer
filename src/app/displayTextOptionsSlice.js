@@ -7,16 +7,24 @@ const LETTERSPACINGDEFAULT = 0
 export const slice = createSlice({
   name: 'displayTextOptions',
   initialState: {
-    styles: [],
+    bold: false,
+    italic: false,
+    underline: false,
     fontWeight: FONTWEIGHTDEFAULT,
     letterSpacing: LETTERSPACINGDEFAULT,
     fontSize: FONTSIZEDEFAULT
   },
   reducers: {
-    updateStyles: (state, action) => {
-      const newStyles = action.payload
+    updateBold: (state, action) => {
+      state.bold = !state.bold
+    },
 
-      state.styles = newStyles
+    updateItalic: (state, action) => {
+      state.italic = !state.italic
+    },
+
+    updateUnderline: (state, action) => {
+      state.underline = !state.underline
     },
 
     updateFontWeight: (state, action) => {
@@ -38,7 +46,7 @@ export const slice = createSlice({
 
       const newFontSize = action.payload
 
-      state.fontSize = newFontSize
+      state.fontSize = Math.round(newFontSize * 10) / 10
     },
 
     updateLetterSpacing: (state, action) => {
@@ -51,13 +59,15 @@ export const slice = createSlice({
 
       const newLetterSpacing = action.payload
 
-      state.letterSpacing = newLetterSpacing
+      state.letterSpacing = Math.round(newLetterSpacing * 10) / 10
     }
   }
 })
 
 export const {
-  updateStyles,
+  updateBold,
+  updateItalic,
+  updateUnderline,
   updateFontWeight,
   updateFontSize,
   updateLetterSpacing

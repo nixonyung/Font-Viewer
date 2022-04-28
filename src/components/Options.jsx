@@ -1,23 +1,22 @@
-import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  Slider,
-  Stack,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-} from "@mui/material";
-import { Box } from "@mui/system";
+  faArrowsRotate,
+  faBold,
+  faItalic,
+  faUnderline,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ActionIcon, Group, Slider, Space, Stack } from "@mantine/core";
 import useEventListener from "@use-it/event-listener";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import availableTags from "../app/availableTags";
-import availableStyles from "../app/availableTextOptions";
 import {
+  updateBold,
   updateFontSize,
   updateFontWeight,
+  updateItalic,
   updateLetterSpacing,
-  updateStyles,
+  updateUnderline,
 } from "../app/displayTextOptionsSlice";
 import { importFonts, resetFonts } from "../app/fontsSlice";
 import getFontTag from "../utils/getFontTag";
@@ -136,38 +135,94 @@ function Anchors() {
 }
 
 function TextStyles() {
-  const styles = useSelector((store) => store.displayTextOptions.styles);
   const dispatch = useDispatch();
 
   return (
-    <Stack direction="row" spacing={4} alignItems="center">
+    <Group spacing="lg">
       <TextStylesButtonGroup />
       <FontWeightSlider />
       <FontSizeSlider />
       <LetterSpacingSlider />
-    </Stack>
+    </Group>
   );
 
   function TextStylesButtonGroup() {
     return (
-      <ToggleButtonGroup
-        value={styles}
-        onChange={(e, newStyles) => {
-          dispatch(updateStyles(newStyles));
-        }}
-      >
-        {availableStyles.map((style) => (
-          <ToggleButton
-            key={style}
-            value={style}
-            className={`capitalize py-1 text-white border-2 border-solid border-gray-800 ${
-              styles.includes(style) && "bg-gray-600"
-            }`}
-          >
-            {style}
-          </ToggleButton>
-        ))}
-      </ToggleButtonGroup>
+      <Group spacing={3}>
+        <BoldButton />
+        <ItalicButton />
+        <UnderlineButton />
+      </Group>
+    );
+
+    function TextStylesButton({ value, icon, updateFunction }) {
+      return (
+        <ActionIcon
+          variant={value ? "filled" : "outline"}
+          size="xl"
+          onClick={() => dispatch(updateFunction())}
+        >
+          <FontAwesomeIcon icon={icon} size="2x" />
+        </ActionIcon>
+      );
+    }
+
+    function BoldButton() {
+      const isBold = useSelector((store) => store.displayTextOptions.bold);
+
+      return (
+        <TextStylesButton value={isBold} icon={faBold} updateFunction={updateBold} />
+      );
+    }
+
+    function ItalicButton() {
+      const isItalic = useSelector((store) => store.displayTextOptions.italic);
+
+      return (
+        <TextStylesButton
+          value={isItalic}
+          icon={faItalic}
+          updateFunction={updateItalic}
+        />
+      );
+    }
+
+    function UnderlineButton() {
+      const isUnderline = useSelector((store) => store.displayTextOptions.underline);
+
+      return (
+        <TextStylesButton
+          value={isUnderline}
+          icon={faUnderline}
+          updateFunction={updateUnderline}
+        />
+      );
+    }
+  }
+
+  function OptionSlider({ value, label, updateFunction, ...sliderProps }) {
+    return (
+      <Stack spacing={2} align="center">
+        <Space h="lg" />
+        <Slider
+          value={value}
+          onChange={(v) => dispatch(updateFunction(v))}
+          min={100}
+          max={900}
+          step={100}
+          labelAlwaysOn
+          className="w-48"
+          {...sliderProps}
+        />
+        <span className="text-gray-400">
+          {label}
+          <FontAwesomeIcon
+            icon={faArrowsRotate}
+            className="absolute ml-3 cursor-pointer"
+            onClick={() => dispatch(updateFunction({ type: "reset" }))}
+          />
+        </span>
+      </Stack>
     );
   }
 
@@ -175,24 +230,14 @@ function TextStyles() {
     const fontWeight = useSelector((store) => store.displayTextOptions.fontWeight);
 
     return (
-      <Box>
-        <Typography textAlign="center">
-          font-weight: {fontWeight}
-          <FontAwesomeIcon
-            icon={faArrowsRotate}
-            className="ml-3 cursor-pointer"
-            onClick={() => dispatch(updateFontWeight({ type: "reset" }))}
-          />
-        </Typography>
-        <Slider
-          min={100}
-          max={900}
-          step={100}
-          value={fontWeight}
-          onChange={(e) => dispatch(updateFontWeight(e.target.value))}
-          className="w-48"
-        />
-      </Box>
+      <OptionSlider
+        value={fontWeight}
+        label="font-weight"
+        updateFunction={updateFontWeight}
+        min={100}
+        max={900}
+        step={100}
+      />
     );
   }
 
@@ -200,24 +245,14 @@ function TextStyles() {
     const fontSize = useSelector((store) => store.displayTextOptions.fontSize);
 
     return (
-      <Box>
-        <Typography textAlign="center">
-          font-size: {fontSize}rem
-          <FontAwesomeIcon
-            icon={faArrowsRotate}
-            className="ml-3 cursor-pointer"
-            onClick={() => dispatch(updateFontSize({ type: "reset" }))}
-          />
-        </Typography>
-        <Slider
-          min={0.1}
-          max={5.0}
-          step={0.1}
-          value={fontSize}
-          onChange={(e) => dispatch(updateFontSize(e.target.value))}
-          className="w-48"
-        />
-      </Box>
+      <OptionSlider
+        value={fontSize}
+        label="font-size"
+        updateFunction={updateFontSize}
+        min={0.1}
+        max={5.0}
+        step={0.1}
+      />
     );
   }
 
@@ -227,24 +262,14 @@ function TextStyles() {
     );
 
     return (
-      <Box>
-        <Typography textAlign="center">
-          letter-spacing: {letterSpacing}
-          <FontAwesomeIcon
-            icon={faArrowsRotate}
-            className="ml-3 cursor-pointer"
-            onClick={() => dispatch(updateLetterSpacing({ type: "reset" }))}
-          />
-        </Typography>
-        <Slider
-          min={-5.0}
-          max={10.0}
-          step={0.1}
-          value={letterSpacing}
-          onChange={(e) => dispatch(updateLetterSpacing(e.target.value))}
-          className="w-48"
-        />
-      </Box>
+      <OptionSlider
+        value={letterSpacing}
+        label="letter-spacing"
+        updateFunction={updateLetterSpacing}
+        min={-5.0}
+        max={10.0}
+        step={0.1}
+      />
     );
   }
 }
