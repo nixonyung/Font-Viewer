@@ -34,16 +34,16 @@ export default function FontCards() {
             </Fragment>
           );
         })}
-
-        <AddFontButton />
       </div>
+
+      <AddFontButton />
     </>
   );
 }
 
 function TagHeader({ tag }) {
   return (
-    <h1 id={tag} className="scroll-mt-6 mt-12">
+    <h1 id={tag} className="scroll-mt-6 mt-12 text-3xl">
       {tag}
     </h1>
   );
@@ -167,7 +167,7 @@ function AddFontButton() {
   return (
     <div
       id="add-font"
-      className="place-items-center rounded-3xl hover:opacity-100 focus-within:opacity-100 opacity-40 grid w-2/5 h-16 mx-auto bg-gray-400 cursor-pointer"
+      className="place-items-center rounded-3xl hover:opacity-100 focus-within:opacity-100 opacity-40 grid w-2/5 h-16 mx-auto mt-6 bg-gray-400 cursor-pointer"
       onClick={(e) => {
         setIsEditing(true);
       }}
