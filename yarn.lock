@@ -3222,15 +3222,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@use-it/event-listener@npm:^0.1.7":
-  version: 0.1.7
-  resolution: "@use-it/event-listener@npm:0.1.7"
-  peerDependencies:
-    react: ">=16.8.0"
-  checksum: 6d29f72fd4da0d3a2b015389b646d9b2f7e0ff9d04b2781bad70a81477f7ee3e79256b4abbd4d4bbd9f871d38ca6f7b48b9104e504d176b88f3a149a32fcaf99
-  languageName: node
-  linkType: hard
-
 "@webassemblyjs/ast@npm:1.11.1":
   version: 1.11.1
   resolution: "@webassemblyjs/ast@npm:1.11.1"
@@ -6291,7 +6282,6 @@ __metadata:
     "@testing-library/jest-dom": ^5.14.1
     "@testing-library/react": ^12.0.0
     "@testing-library/user-event": ^13.2.1
-    "@use-it/event-listener": ^0.1.7
     autoprefixer: ^10.4.4
     postcss: ^8.4.12
     prettier-plugin-tailwind-css: ^1.5.0

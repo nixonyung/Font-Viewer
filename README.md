@@ -7,7 +7,10 @@
 
 ## TODO
 
-- adjustable display font weight
+- refactor with Context API
+- refactor and add proptypes
+- refactor `./src/res`
+- refactor hooks (e.g. use Mantine hooks)
 - reject invalid new font
 - reject with noti
 - templates
@@ -15,6 +18,7 @@
   - comic-like
   - stupid quote
   - formal
+- shouldComponentUpdate / PureComponent
 
 ## Things I learnt
 

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
+import availableTags from '../res/availableTags'
 import getFontTag from '../utils/getFontTag'
-import availableTags from './availableTags'
 
 const LOCALSTORAGEPROPNAME = 'fonts'
 
