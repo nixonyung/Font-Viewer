@@ -17,7 +17,7 @@ export default function DisplayText({ fontName }) {
         fontSize,
         letterSpacing,
       }}
-      className="w-full m-0"
+      className="mx-3 mt-6"
     >
       {displayText}
     </p>

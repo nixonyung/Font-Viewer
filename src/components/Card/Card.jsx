@@ -1,10 +1,10 @@
+import GoButton from "../CardActionButton/GoButton";
 import DisplayText from "./DisplayText";
 import FontName from "./FontName";
-import GoButton from "./GoButton";
 import RemoveButton from "./RemoveButton";
 import Tags from "./Tags";
 
-export default function Card({ fontName }) {
+export default function Card({ fontName, demoButton }) {
   return (
     <div className="px-3 py-2 bg-gray-600 rounded-md">
       <div className="flex items-center gap-4">
@@ -12,8 +12,11 @@ export default function Card({ fontName }) {
         <Tags fontName={fontName} />
         <RemoveButton fontName={fontName} />
       </div>
-      <div className="flex items-end gap-6 mt-3">
-        <DisplayText fontName={fontName} />
+
+      <DisplayText fontName={fontName} />
+
+      <div className="flex items-end justify-end gap-3 mt-1">
+        {demoButton}
         <GoButton fontName={fontName} />
       </div>
     </div>
