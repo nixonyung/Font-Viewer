@@ -1,8 +1,7 @@
 import { faLeftLong, faRightLong } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Image, Modal, Pagination } from "@mantine/core";
-import { useWindowEvent } from "@mantine/hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import demo1Img from "../../images/demo1.jpg";
 import demo2Img from "../../images/demo2.jpg";
@@ -19,7 +18,7 @@ export default function DemoModal() {
   const [demoImgIdx, setDemoImgIdx] = useState(1);
   const dispatch = useDispatch();
 
-  useWindowEvent("keydown", (e) => {
+  const keydownHandler = (e) => {
     if (!demoModalOpened) return;
 
     if (e.key === "ArrowLeft") {
@@ -27,19 +26,19 @@ export default function DemoModal() {
     } else if (e.key === "ArrowRight") {
       dispatch(updateDemoFontIdx({ type: "inc", fontsLength: fonts.length }));
     }
-  });
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", keydownHandler);
+    return () => window.removeEventListener("keydown", keydownHandler);
+  }, [demoModalOpened]);
 
   const demoImgAndText = () => {
     switch (demoImgIdx) {
       case 1:
         return (
           <>
-            <Image
-              src={demo1Img}
-              alt="haha"
-              height="80vh"
-              className="select-none"
-            ></Image>
+            <Image src={demo1Img} alt="haha" height="80vh" className="select-none" />
             <p
               style={{
                 position: "absolute",
@@ -58,12 +57,7 @@ export default function DemoModal() {
       case 2:
         return (
           <>
-            <Image
-              src={demo2Img}
-              alt="haha"
-              height="80vh"
-              className="select-none"
-            ></Image>
+            <Image src={demo2Img} alt="haha" height="80vh" className="select-none" />
             <p
               style={{
                 position: "absolute",
