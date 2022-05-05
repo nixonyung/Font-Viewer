@@ -1,6 +1,6 @@
 import { faBold } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
-import { updateBold } from "../../app/displayTextOptionsSlice";
+import { updateBold } from "../../redux/displayTextOptionsSlice";
 import SidebarTextStyleButton from "./SidebarTextStyleButton";
 
 export default function BoldButton() {

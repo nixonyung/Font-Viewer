@@ -1,7 +1,7 @@
 import { faRefresh } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch } from "react-redux";
-import { reloadFonts } from "../../app/fontsSlice";
+import { reloadFonts } from "../../redux/fontsSlice";
 
 export default function ReloadButton() {
   const dispatch = useDispatch();

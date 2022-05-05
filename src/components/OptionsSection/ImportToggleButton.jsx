@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { importFonts } from "../../app/fontsSlice";
+import { importFonts } from "../../redux/fontsSlice";
 import BlueButton from "./BlueButton";
 
 export default function ImportToggleButton() {

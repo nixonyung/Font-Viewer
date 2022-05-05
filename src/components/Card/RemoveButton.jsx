@@ -1,7 +1,7 @@
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch } from "react-redux";
-import { removeFont } from "../../app/fontsSlice";
+import { removeFont } from "../../redux/fontsSlice";
 
 export default function RemoveButton({ fontName }) {
   const dispatch = useDispatch();

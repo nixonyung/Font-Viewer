@@ -1,7 +1,7 @@
 import { useWindowEvent } from "@mantine/hooks";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { resetFonts } from "../../app/fontsSlice";
+import { resetFonts } from "../../redux/fontsSlice";
 import BlueButton from "./BlueButton";
 
 export default function ResetFontsButton() {

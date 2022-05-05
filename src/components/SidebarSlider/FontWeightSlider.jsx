@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { updateFontWeight } from "../../app/displayTextOptionsSlice";
+import { updateFontWeight } from "../../redux/displayTextOptionsSlice";
 import SidebarSlider from "./SidebarSlider";
 
 export default function FontWeightSlider() {

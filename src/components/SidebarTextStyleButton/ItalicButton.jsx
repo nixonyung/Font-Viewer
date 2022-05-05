@@ -1,6 +1,6 @@
 import { faItalic } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
-import { updateItalic } from "../../app/displayTextOptionsSlice";
+import { updateItalic } from "../../redux/displayTextOptionsSlice";
 import SidebarTextStyleButton from "./SidebarTextStyleButton";
 
 export default function ItalicButton() {

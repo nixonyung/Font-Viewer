@@ -2,7 +2,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { addFont } from "../../app/fontsSlice";
+import { addFont } from "../../redux/fontsSlice";
 
 export default function AddFontButton() {
   const [isEditing, setIsEditing] = useState(false);

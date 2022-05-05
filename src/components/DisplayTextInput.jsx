@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateDisplayText } from "../app/displayTextSlice";
+import { updateDisplayText } from "../redux/displayTextSlice";
 
 export default function DisplayTextInput() {
   const displayText = useSelector((store) => store.displayText);

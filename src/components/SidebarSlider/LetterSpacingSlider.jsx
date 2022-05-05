@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { updateLetterSpacing } from "../../app/displayTextOptionsSlice";
+import { updateLetterSpacing } from "../../redux/displayTextOptionsSlice";
 import SidebarSlider from "./SidebarSlider";
 
 export default function LetterSpacingSlider() {
