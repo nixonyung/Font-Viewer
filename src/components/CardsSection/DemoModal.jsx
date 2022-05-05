@@ -1,13 +1,18 @@
 import { faLeftLong, faRightLong } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Image, Modal, Pagination } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import demo1Img from "../../images/demo1.jpg";
-import demo2Img from "../../images/demo2.jpg";
 import { updateDemoFontIdx } from "../../redux/demoFontIdxSlice";
 import { updateDemoModalOpened } from "../../redux/demoModalOpenedSlice";
 import getFontTag from "../../utils/getFontTag";
+
+function importAll(r) {
+  return r.keys().map(r);
+}
+const demoImages = importAll(
+  require.context("../../images", false, /\.(png|jpe?g|svg)$/)
+);
 
 export default function DemoModal() {
   const demoFontIdx = useSelector((store) => store.demoFontIdx);
@@ -18,65 +23,51 @@ export default function DemoModal() {
   const [demoImgIdx, setDemoImgIdx] = useState(1);
   const dispatch = useDispatch();
 
-  const keydownHandler = (e) => {
-    if (!demoModalOpened) return;
+  const keydownHandler = useCallback(
+    (e) => {
+      if (!demoModalOpened) return;
 
-    if (e.key === "ArrowLeft") {
-      dispatch(updateDemoFontIdx({ type: "dec", fontsLength: fonts.length }));
-    } else if (e.key === "ArrowRight") {
-      dispatch(updateDemoFontIdx({ type: "inc", fontsLength: fonts.length }));
-    }
-  };
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        dispatch(updateDemoFontIdx({ type: "dec", fontsLength: fonts.length }));
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        dispatch(updateDemoFontIdx({ type: "inc", fontsLength: fonts.length }));
+      }
+    },
+    [demoModalOpened, fonts, dispatch]
+  );
 
   useEffect(() => {
     window.addEventListener("keydown", keydownHandler);
     return () => window.removeEventListener("keydown", keydownHandler);
-  }, [demoModalOpened]);
+  }, [demoModalOpened, keydownHandler]);
 
-  const demoImgAndText = () => {
-    switch (demoImgIdx) {
-      case 1:
-        return (
-          <>
-            <Image src={demo1Img} alt="haha" height="80vh" className="select-none" />
-            <p
-              style={{
-                position: "absolute",
-                top: 380,
-                left: 100,
-                width: 240,
-                fontSize: 16,
-                fontFamily: fonts[demoFontIdx],
-                userSelect: "none",
-              }}
-            >
-              {displayText}
-            </p>
-          </>
-        );
-      case 2:
-        return (
-          <>
-            <Image src={demo2Img} alt="haha" height="80vh" className="select-none" />
-            <p
-              style={{
-                position: "absolute",
-                top: 100,
-                left: 100,
-                width: 500,
-                fontSize: 20,
-                fontFamily: fonts[demoFontIdx],
-                userSelect: "none",
-              }}
-            >
-              {displayText}
-            </p>
-          </>
-        );
-      default:
-        <></>;
-    }
-  };
+  const demoTextStyles = [
+    {
+      top: 380,
+      left: 100,
+      width: 240,
+      fontSize: 16,
+      fontFamily: fonts[demoFontIdx],
+    },
+    {
+      top: 100,
+      left: 100,
+      width: 500,
+      fontSize: 32,
+      fontFamily: fonts[demoFontIdx],
+    },
+    {
+      top: 420,
+      left: "50%",
+      transform: "translateX(-50%)",
+      width: 750,
+      fontSize: 28,
+      textAlign: "center",
+      fontFamily: fonts[demoFontIdx],
+    },
+  ];
 
   return (
     <Modal
@@ -92,7 +83,15 @@ export default function DemoModal() {
       closeOnClickOutside={false}
       trapFocus={false}
     >
-      {demoImgAndText()}
+      <Image
+        src={demoImages[demoImgIdx - 1]}
+        alt={`demo${demoImgIdx}`}
+        height="80vh"
+        className="select-none"
+      />
+      <p style={demoTextStyles[demoImgIdx - 1]} className="absolute select-none">
+        {displayText}
+      </p>
 
       <h2 className="-top-8 absolute text-xl">
         {fonts[demoFontIdx]}{" "}
@@ -115,7 +114,7 @@ export default function DemoModal() {
         }
       />
       <Pagination
-        total={2}
+        total={demoImages.length}
         page={demoImgIdx}
         onChange={setDemoImgIdx}
         className="-bottom-12 left-1/2 absolute -translate-x-1/2"

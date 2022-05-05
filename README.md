@@ -8,14 +8,12 @@
 ## TODO
 
 - refactor and add proptypes
-- refactor `./src/res`
 - reject invalid new font
 - reject with noti
 - demo templates
-  - dialog
   - stupid quote
   - formal
-- mantine list hook performance?
+- mantine list hook performance (e.g. insertion)?
 
 ## Things I learnt
 
