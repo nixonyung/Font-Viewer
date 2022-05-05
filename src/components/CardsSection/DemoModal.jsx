@@ -27,12 +27,14 @@ export default function DemoModal() {
     (e) => {
       if (!demoModalOpened) return;
 
+      e.preventDefault();
+
       if (e.key === "ArrowLeft") {
-        e.preventDefault();
         dispatch(updateDemoFontIdx({ type: "dec", fontsLength: fonts.length }));
       } else if (e.key === "ArrowRight") {
-        e.preventDefault();
         dispatch(updateDemoFontIdx({ type: "inc", fontsLength: fonts.length }));
+      } else if (isFinite(e.key) && +e.key <= demoImages.length) {
+        setDemoImgIdx(+e.key);
       }
     },
     [demoModalOpened, fonts, dispatch]
