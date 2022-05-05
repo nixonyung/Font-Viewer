@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 export const slice = createSlice({
   name: 'demoModalOpened',
-  initialState: 1,
+  initialState: false,
   reducers: {
     updateDemoModalOpened: (state, action) => {
       let newDemoModalOpened = action.payload

@@ -1,8 +1,6 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import GoogleFontLoader from "react-google-font-loader";
-import { useDispatch, useSelector } from "react-redux";
-import { updateDemoFontIdx } from "../../redux/demoFontIdxSlice";
-import { updateDemoModalOpened } from "../../redux/demoModalOpenedSlice";
+import { useSelector } from "react-redux";
 import getFontTag from "../../utils/getFontTag";
 import Card from "../Card";
 import DemoButton from "../CardActionButton/DemoButton";
@@ -12,9 +10,6 @@ import TagHeader from "./TagHeader";
 
 export default function CardsSection() {
   const fonts = useSelector((store) => store.fonts);
-  const [isDemoOpened, setIsDemoOpened] = useState(false);
-  const [demoFontIdx, setDemoFontIdx] = useState(0);
-  const dispatch = useDispatch();
   let lastTag = "";
 
   return (
@@ -26,7 +21,7 @@ export default function CardsSection() {
         }))}
       />
 
-      <DemoModal {...{ isDemoOpened, setIsDemoOpened, demoFontIdx, setDemoFontIdx }} />
+      <DemoModal />
 
       <section className="flex flex-col gap-4">
         {fonts.map((fontName, i) => {
@@ -37,17 +32,7 @@ export default function CardsSection() {
           return (
             <Fragment key={fontName}>
               {withHeader && <TagHeader tag={thisTag} />}
-              <Card
-                fontName={fontName}
-                demoButton={
-                  <DemoButton
-                    onClick={() => {
-                      dispatch(updateDemoModalOpened(true));
-                      dispatch(updateDemoFontIdx(i));
-                    }}
-                  />
-                }
-              />
+              <Card fontName={fontName} demoButton={<DemoButton fontIdx={i} />} />
             </Fragment>
           );
         })}

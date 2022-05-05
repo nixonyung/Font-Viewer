@@ -1,6 +1,7 @@
 import { faLeftLong, faRightLong } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Image, Modal, Pagination } from "@mantine/core";
+import { useWindowEvent } from "@mantine/hooks";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import demo1Img from "../../images/demo1.jpg";
@@ -9,14 +10,24 @@ import { updateDemoFontIdx } from "../../redux/demoFontIdxSlice";
 import { updateDemoModalOpened } from "../../redux/demoModalOpenedSlice";
 import getFontTag from "../../utils/getFontTag";
 
-export default function DemoModal({ isDemoOpened, setIsDemoOpened }) {
-  const displayText = useSelector((store) => store.displayText);
+export default function DemoModal() {
   const demoFontIdx = useSelector((store) => store.demoFontIdx);
-  const fonts = useSelector((store) => store.fonts);
   const demoModalOpened = useSelector((store) => store.demoModalOpened);
+  const displayText = useSelector((store) => store.displayText);
+  const fonts = useSelector((store) => store.fonts);
   const demoFontTag = getFontTag(fonts[demoFontIdx]);
   const [demoImgIdx, setDemoImgIdx] = useState(1);
   const dispatch = useDispatch();
+
+  useWindowEvent("keydown", (e) => {
+    if (!demoModalOpened) return;
+
+    if (e.key === "ArrowLeft") {
+      dispatch(updateDemoFontIdx({ type: "dec", fontsLength: fonts.length }));
+    } else if (e.key === "ArrowRight") {
+      dispatch(updateDemoFontIdx({ type: "inc", fontsLength: fonts.length }));
+    }
+  });
 
   const demoImgAndText = () => {
     switch (demoImgIdx) {
@@ -98,14 +109,16 @@ export default function DemoModal({ isDemoOpened, setIsDemoOpened }) {
         size="2x"
         className="top-1/2 -left-24 absolute p-4 -translate-y-1/2 border-4 border-gray-400 border-solid rounded-full cursor-pointer select-none"
         onClick={() =>
-          dispatch(updateDemoFontIdx((demoFontIdx - 1 + fonts.length) % fonts.length))
+          dispatch(updateDemoFontIdx({ type: "dec", fontsLength: fonts.length }))
         }
       />
       <FontAwesomeIcon
         icon={faRightLong}
         size="2x"
         className="top-1/2 -right-24 absolute p-4 -translate-y-1/2 border-4 border-gray-400 border-solid rounded-full cursor-pointer select-none"
-        onClick={() => dispatch(updateDemoFontIdx((demoFontIdx + 1) % fonts.length))}
+        onClick={() =>
+          dispatch(updateDemoFontIdx({ type: "inc", fontsLength: fonts.length }))
+        }
       />
       <Pagination
         total={2}

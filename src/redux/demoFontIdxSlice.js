@@ -5,9 +5,22 @@ export const slice = createSlice({
   initialState: 1,
   reducers: {
     updateDemoFontIdx: (state, action) => {
-      let newDemoFontIdx = action.payload
+      const { value, type, fontsLength } = action.payload
 
-      return newDemoFontIdx
+      if (value !== undefined) return value
+
+      switch (type) {
+        case 'inc':
+          return (state + 1) % fontsLength
+        case 'dec':
+          return (state - 1 + fontsLength) % fontsLength
+        default:
+          console.log("[updateDemoFontIdx] type should be 'inc' or 'dec'")
+      }
+
+      // let newDemoFontIdx = action.payload
+
+      // return newDemoFontIdx
     }
   }
 })
