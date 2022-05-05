@@ -9,3 +9,7 @@ html {
   background: black;
   color: white;
 }
+
+body {
+  overscroll-behavior: none;
+}

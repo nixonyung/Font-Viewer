@@ -7,18 +7,15 @@
 
 ## TODO
 
-- refactor with Context API
 - refactor and add proptypes
 - refactor `./src/res`
-- refactor hooks (e.g. use Mantine hooks)
 - reject invalid new font
 - reject with noti
-- templates
-  - dialog, with dark/blurred background
-  - comic-like
+- demo templates
+  - dialog
   - stupid quote
   - formal
-- shouldComponentUpdate / PureComponent
+- mantine list hook performance?
 
 ## Things I learnt
 
