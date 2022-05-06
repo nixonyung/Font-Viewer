@@ -7,7 +7,8 @@ export default function SidebarTextStyleButton({ value, icon, updateFunction }) 
 
   return (
     <ActionIcon
-      variant={value ? "filled" : "outline"}
+      variant="outline"
+      classNames={value && { root: "bg-blue-300" }}
       color="blue"
       size="lg"
       onClick={() => dispatch(updateFunction())}
