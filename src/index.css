@@ -1,15 +1,31 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+/* @import "animate.css"; */
+/* @import "hover.css"; */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
-
-html {
-  font-family: "Roboto";
+body {
   background: black;
   color: white;
+  font-family: "Roboto";
+  overscroll-behavior-y: none;
 }
 
-body {
-  overscroll-behavior: none;
+/* width */
+::-webkit-scrollbar {
+  width: 4px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: #444444;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: white;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: gray;
 }
