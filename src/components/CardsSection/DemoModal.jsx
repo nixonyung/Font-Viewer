@@ -1,7 +1,7 @@
 import { faLeftLong, faRightLong } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Image, Modal, Pagination } from "@mantine/core";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateDemoFontIdx } from "../../redux/demoFontIdxSlice";
 import { updateDemoModalOpened } from "../../redux/demoModalOpenedSlice";
@@ -23,8 +23,8 @@ export default function DemoModal() {
   const [demoImgIdx, setDemoImgIdx] = useState(1);
   const dispatch = useDispatch();
 
-  const keydownHandler = useCallback(
-    (e) => {
+  useEffect(() => {
+    const keydownHandler = (e) => {
       if (!demoModalOpened) return;
 
       e.preventDefault();
@@ -36,14 +36,11 @@ export default function DemoModal() {
       } else if (isFinite(e.key) && +e.key <= demoImages.length) {
         setDemoImgIdx(+e.key);
       }
-    },
-    [demoModalOpened, fonts, dispatch]
-  );
+    };
 
-  useEffect(() => {
     window.addEventListener("keydown", keydownHandler);
     return () => window.removeEventListener("keydown", keydownHandler);
-  }, [demoModalOpened, keydownHandler]);
+  }, [demoModalOpened, fonts, dispatch]);
 
   const demoTextStyles = [
     {
