@@ -50,8 +50,6 @@ export const slice = createSlice({
     },
 
     updateLetterSpacing: (state, action) => {
-      console.log(action)
-
       if (action.payload.type === 'reset') {
         state.letterSpacing = LETTERSPACINGDEFAULT
         return
