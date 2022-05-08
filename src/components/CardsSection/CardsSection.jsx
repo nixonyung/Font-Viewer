@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import GoogleFontLoader from "react-google-font-loader";
 import { useSelector } from "react-redux";
-import { Virtuoso } from "react-virtuoso";
+import { GroupedVirtuoso } from "react-virtuoso";
 import { CardSectionRefContext } from "../../contexts/CardSectionRefContext";
 import availableTags from "../../res/availableTags";
 import getFontTag from "../../utils/getFontTag";
@@ -9,6 +9,7 @@ import Card from "../Card";
 import DemoButton from "../CardActionButton/DemoButton";
 import AddFontButton from "./AddFontButton";
 import DemoModal from "./DemoModal";
+import TagHeader from "./TagHeader";
 
 export default function CardsSection() {
   const CardSectionRef = useContext(CardSectionRefContext);
@@ -32,20 +33,26 @@ export default function CardsSection() {
       />
       <DemoModal />
 
-      <Virtuoso
+      <GroupedVirtuoso
         useWindowScroll
         ref={CardSectionRef}
         itemSize={(el, field) => {
-          if (field === "offsetHeight") return el.getBoundingClientRect().height + 48;
-          else return el.getBoundingClientRect().width;
+          if (el.style.position === "sticky") {
+            // is a group header
+            if (field === "offsetHeight") return el.getBoundingClientRect().height + 48;
+            else if (field === "offsetWidth") return el.getBoundingClientRect().width;
+          } else {
+            // is an item
+            if (field === "offsetHeight") return el.getBoundingClientRect().height + 48;
+            else if (field === "offsetWidth") return el.getBoundingClientRect().width;
+          }
         }}
-        data={fonts}
-        itemContent={(index) => (
-          <Card
-            fontName={fonts[index]}
-            demoButton={<DemoButton fontIdx={index} />}
-            withHeader={cumulativeGroupCounts.includes(index)}
-          />
+        groupCounts={groupCounts}
+        groupContent={(i) => (
+          <TagHeader tag={getFontTag(fonts[cumulativeGroupCounts[i]])} />
+        )}
+        itemContent={(i) => (
+          <Card fontName={fonts[i]} demoButton={<DemoButton fontIdx={i} />} />
         )}
       />
       <AddFontButton />
