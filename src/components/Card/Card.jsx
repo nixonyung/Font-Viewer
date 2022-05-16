@@ -1,13 +1,19 @@
+import { motion } from "framer-motion";
 import GoButton from "../CardActionButton/GoButton";
 import DisplayText from "./DisplayText";
 import FontName from "./FontName";
 import RemoveButton from "./RemoveButton";
 import Tags from "./Tags";
 
-export default function Card({ style, fontName, demoButton }) {
+// const variants = {
+//   hidden: { opacity: 0 },
+//   visible: { opacity: 1 },
+// };
+
+export default function Card({ fontName, demoButton }) {
   return (
-    <div
-      style={style}
+    <motion.div
+      whileHover={{ scale: 1.05 }}
       className="border-y-2 px-3 py-2 my-6 bg-gray-600 border-gray-800 border-solid rounded-md"
     >
       <div className="flex items-center gap-4">
@@ -22,6 +28,6 @@ export default function Card({ style, fontName, demoButton }) {
         {demoButton}
         <GoButton fontName={fontName} />
       </div>
-    </div>
+    </motion.div>
   );
 }
