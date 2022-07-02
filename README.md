@@ -7,8 +7,9 @@ bit of) [Framer Motion](https://www.framer.com/motion/).
 
 ## Get started
 
-1. Run `yarn start`
-2. Use this app at [http://localhost:3000](http://localhost:3000)
+1. Run `yarn install`
+2. Run `yarn start`
+3. Use this app at [http://localhost:3000](http://localhost:3000)
 
 ## Features
 
